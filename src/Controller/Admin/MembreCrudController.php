@@ -11,6 +11,7 @@ use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\TextareaField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\UrlField;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
@@ -43,7 +44,7 @@ class MembreCrudController extends AbstractCrudController
     {
         $this->pageName = $pageName;
 				$fields = [];
-				$fields[] = yield IdField::new('username');
+				$fields[] = yield IdField::new('username')->onlyOnForms();
 				if( $pageName === Crud::PAGE_NEW ){
 					$fields[] = yield TextField::new('password')->setFormType(RepeatedType::class)
 						->setFormTypeOptions([
@@ -55,8 +56,10 @@ class MembreCrudController extends AbstractCrudController
 						->setRequired($pageName === Crud::PAGE_NEW)
 						->onlyOnForms()->hideWhenUpdating();
 				}
+				// $fields[] = yield AssociationField::new('etat','État')->setFormTypeOption('choice_label', 'label');
 				$fields[] = yield TextField::new('nom');
 				$fields[] = yield TextField::new('prenom');
+				$fields[] = yield TextareaField::new('description');
 				$fields[] = yield EmailField::new('email');
 				$fields[] = yield UrlField::new('lien_web');
 				$fields[] = yield AssociationField::new('statut_professionnel','Statut Pro.')->setFormTypeOption('choice_label', 'label');
@@ -64,6 +67,7 @@ class MembreCrudController extends AbstractCrudController
 				$fields[] = yield AssociationField::new('centres_interets','Centres d´Intérêts')->setFormTypeOption('choice_label', 'label');
 				$fields[] = yield AssociationField::new('connaissances','Connaissances')->setFormTypeOption('choice_label', 'label');
 				$fields[] = yield AssociationField::new('pratiques_asso','Pratiques Associatives/Collectives')->setFormTypeOption('choice_label', 'label');
+				$fields[] = yield AssociationField::new('etat','État')->setFormTypeOption('choice_label', 'label');
 				return $fields;
     }
 
