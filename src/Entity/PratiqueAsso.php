@@ -24,6 +24,10 @@ class PratiqueAsso
     #[ORM\ManyToMany(targetEntity: Membre::class, mappedBy: 'pratiques_asso')]
     private Collection $membres;
 
+    #[ORM\ManyToOne(inversedBy: 'pratiqueAssos')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Etat $etat = null;
+
     public function __construct()
     {
         $this->synonymes = new ArrayCollection();
@@ -94,6 +98,18 @@ class PratiqueAsso
         if ($this->membres->removeElement($membre)) {
             $membre->removePratiquesAsso($this);
         }
+
+        return $this;
+    }
+
+    public function getEtat(): ?Etat
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(?Etat $etat): self
+    {
+        $this->etat = $etat;
 
         return $this;
     }

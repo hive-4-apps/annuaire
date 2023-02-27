@@ -24,6 +24,10 @@ class CentreInteret
     #[ORM\ManyToMany(targetEntity: Membre::class, mappedBy: 'centres_interets')]
     private Collection $membres;
 
+    #[ORM\ManyToOne(inversedBy: 'centreInterets')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Etat $etat = null;
+
     public function __construct()
     {
         $this->synonymes = new ArrayCollection();
@@ -94,6 +98,18 @@ class CentreInteret
         if ($this->membres->removeElement($membre)) {
             $membre->removeCentresInteret($this);
         }
+
+        return $this;
+    }
+
+    public function getEtat(): ?Etat
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(?Etat $etat): self
+    {
+        $this->etat = $etat;
 
         return $this;
     }

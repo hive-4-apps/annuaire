@@ -37,6 +37,9 @@ class ActivitePro
     #[ORM\ManyToMany(targetEntity: Membre::class, mappedBy: 'activites_pro')]
     private Collection $membres;
 
+    #[ORM\ManyToOne(inversedBy: 'activitePros')]
+    private ?Etat $etat = null;
+
     public function __construct()
     {
         $this->membres = new ArrayCollection();
@@ -142,6 +145,18 @@ class ActivitePro
         if ($this->membres->removeElement($membre)) {
             $membre->removeActivitesPro($this);
         }
+
+        return $this;
+    }
+
+    public function getEtat(): ?Etat
+    {
+        return $this->etat;
+    }
+
+    public function setEtat(?Etat $etat): self
+    {
+        $this->etat = $etat;
 
         return $this;
     }
