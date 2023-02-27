@@ -10,6 +10,8 @@ parameters:
     DB_SERVER: "%env(DB_SERVER)%"
     DB_VERSION: "%env(DB_VERSION)%"
     APP_SECRET: "%env(APP_SECRET)%"
+    ADMIN_ROOT_PATH: "%env(ADMIN_ROOT_PATH)%"
+    ADMIN_LOGIN_PATH: "%env(ADMIN_LOGIN_PATH)%"
 services:
     # default configuration for services in *this* file
     _defaults:
