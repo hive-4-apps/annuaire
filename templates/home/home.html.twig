@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link href="{{ asset('build/app.css') }}" type="text/css" rel="stylesheet" />
+{% endblock %}
+
+ {% block javascripts %}
+     <script type="text/javascript" src="{{ asset('build/app.js') }}"></script>
+ {% endblock %}
+
+{% block title %}Annuaire des Français au Brésil{% endblock %}
+
+{% block body %}
+    <a class="waves-effect waves-light btn">button</a>
+{% endblock %}

@@ -64,7 +64,10 @@ class MembreCrudController extends AbstractCrudController
 				$fields[] = yield UrlField::new('lien_web');
 				$fields[] = yield AssociationField::new('statut_professionnel','Statut Pro.')->setFormTypeOption('choice_label', 'label');
 				$fields[] = yield AssociationField::new('activites_pro','Métiers')->setFormTypeOption('choice_label', 'appelation_metier');
-				$fields[] = yield AssociationField::new('centres_interets','Centres d´Intérêts')->setFormTypeOption('choice_label', 'label');
+				$fields[] = yield AssociationField::new('centres_interets','Centres d´Intérêts')
+					->setFormTypeOptions(
+						['choice_label' => 'label' ]
+					);
 				$fields[] = yield AssociationField::new('connaissances','Connaissances')->setFormTypeOption('choice_label', 'label');
 				$fields[] = yield AssociationField::new('pratiques_asso','Pratiques Associatives/Collectives')->setFormTypeOption('choice_label', 'label');
 				$fields[] = yield AssociationField::new('etat','État')->setFormTypeOption('choice_label', 'label');
