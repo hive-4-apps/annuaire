@@ -27,6 +27,8 @@ class PratiqueAssoCrudController extends AbstractCrudController
 		$fields = [];
 		$fields[] = yield TextField::new('label');
 		$fields[] = yield AssociationField::new('synonymes','Synonymes')->setFormTypeOption('choice_label', 'label');
+		$fields[] = yield AssociationField::new('etat', 'Statut')->setFormTypeOption('choice_label', 'label');
+
 		return $fields;
 	}
 }

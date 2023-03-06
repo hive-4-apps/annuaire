@@ -12,6 +12,7 @@ parameters:
     APP_SECRET: "%env(APP_SECRET)%"
     ADMIN_ROOT_PATH: "%env(ADMIN_ROOT_PATH)%"
     ADMIN_LOGIN_PATH: "%env(ADMIN_LOGIN_PATH)%"
+    app.supported_locales: 'fr|br'
 services:
     # default configuration for services in *this* file
     _defaults:

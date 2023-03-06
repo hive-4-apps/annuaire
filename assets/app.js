@@ -8,9 +8,15 @@
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
 
+//Materialize
 import "./styles/materialize.min.css";
-
 import './js/materialize.min';
+import './js/script';
+
+//Fontawesome
+import "./styles/fa-all.min.css";
+import './js/fa-all.min';
 
 // start the Stimulus application
 import './bootstrap';
+

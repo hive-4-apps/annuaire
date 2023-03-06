@@ -62,10 +62,4 @@ class DashboardController extends AbstractDashboardController
 						MenuItem::linkToCrud('Pratiques Asso.', 'fa fa-people-group', PratiqueAsso::class),
 					]);
     }
-		public function configureAssets(): Assets
-		{
-			return parent::configureAssets()
-				->addJsFile('admin/override.js')
-				;
-		}
 }

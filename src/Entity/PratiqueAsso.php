@@ -16,7 +16,7 @@ class PratiqueAsso
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $label = null;
+    public ?string $label = null;
 
     #[ORM\ManyToMany(targetEntity: self::class)]
     private Collection $synonymes;

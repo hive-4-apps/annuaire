@@ -28,7 +28,7 @@ class StatutProCrudController extends AbstractCrudController
 			return [
 				yield TextField::new('label')->setRequired(true),
 				yield NumberField::new('ordre')->setNumDecimals(0),
-				yield AssociationField::new('etat','État')->setFormTypeOption('choice_label', 'label')
+				yield AssociationField::new('etat','Statut')->setFormTypeOption('choice_label', 'label')
 			];
     }
 }

@@ -1,0 +1,5 @@
+<select id="filter-{{ device }}-localization" class="filter-localization">
+    {% for region in regions %}
+        <option {% if region.sigle == app.request.get('fr') %}selected{% endif %} value="{{ region.sigle }}">{{ region.libelle }}</option>
+    {% endfor %}
+</select>

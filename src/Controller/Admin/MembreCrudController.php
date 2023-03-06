@@ -56,12 +56,13 @@ class MembreCrudController extends AbstractCrudController
 						->setRequired($pageName === Crud::PAGE_NEW)
 						->onlyOnForms()->hideWhenUpdating();
 				}
-				// $fields[] = yield AssociationField::new('etat','État')->setFormTypeOption('choice_label', 'label');
 				$fields[] = yield TextField::new('nom');
 				$fields[] = yield TextField::new('prenom');
 				$fields[] = yield TextareaField::new('description');
 				$fields[] = yield EmailField::new('email');
 				$fields[] = yield UrlField::new('lien_web');
+				$fields[] = yield AssociationField::new('municipio','Municipalité')->setFormTypeOption('choice_label', 'nome')->setRequired(false);
+				$fields[] = yield AssociationField::new('region','État')->setFormTypeOption('choice_label', 'estado')->setRequired(false);
 				$fields[] = yield AssociationField::new('statut_professionnel','Statut Pro.')->setFormTypeOption('choice_label', 'label');
 				$fields[] = yield AssociationField::new('activites_pro','Métiers')->setFormTypeOption('choice_label', 'appelation_metier');
 				$fields[] = yield AssociationField::new('centres_interets','Centres d´Intérêts')
@@ -70,7 +71,7 @@ class MembreCrudController extends AbstractCrudController
 					);
 				$fields[] = yield AssociationField::new('connaissances','Connaissances')->setFormTypeOption('choice_label', 'label');
 				$fields[] = yield AssociationField::new('pratiques_asso','Pratiques Associatives/Collectives')->setFormTypeOption('choice_label', 'label');
-				$fields[] = yield AssociationField::new('etat','État')->setFormTypeOption('choice_label', 'label');
+				$fields[] = yield AssociationField::new('etat','Statut')->setFormTypeOption('choice_label', 'label');
 				return $fields;
     }
 

@@ -22,6 +22,8 @@ Encore
      */
     .addEntry('app', './assets/app.js')
     .addEntry('materialize', './assets/js/materialize.min.js')
+    .addEntry('script', './assets/js/script.js')
+    .addEntry('fontawesome', './assets/js/fa-all.min.js')
 
     // enables the Symfony UX Stimulus bridge (used in assets/bootstrap.js)
     .enableStimulusBridge('./assets/controllers.json')
@@ -56,6 +58,8 @@ Encore
         config.useBuiltIns = 'usage';
         config.corejs = '3.23';
     })
+
+    .enablePostCssLoader()
 
     // enables Sass/SCSS support
     //.enableSassLoader()

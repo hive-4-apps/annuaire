@@ -1,3 +1,86 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
     background-color: lightgray;
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
 }
+
+header.page-header{
+    height: 56px;
+}
+
+header.page-header .nav-wrapper > div.center{
+    display: inline-block;
+}
+
+header.page-header h1{
+    font-size: 1em;
+    margin: 0;
+    padding: 0;
+    display: inline;
+}
+
+header.page-header .dropdown-trigger{
+    display: inline-block;
+    margin-left: 5px;
+}
+
+header.page-header .dropdown-trigger > i{
+    margin-left: 0;
+}
+
+body > main {
+    background-color: #fff;
+    flex: 1 0 auto;
+}
+
+body > main h2{
+    font-size: 1.5em;
+}
+
+
+main hr{
+    border-color: lightgray;
+    height: 2px;
+}
+
+main .chips{
+    border-bottom: 1px solid lightgrey;
+}
+
+main .chips .chip{
+    margin-bottom: 0.5rem;
+}
+
+main h4{
+    font-size: 1.1rem;
+    font-weight: lighter;
+}
+
+main .card .avatar-empty{
+    text-align: center;
+    font-size: 7rem;
+}
+
+main .card .card-action > .row{
+    margin-bottom: 0;
+}
+
+footer.page-footer{
+    height: 56px;
+    padding-top: 0;
+}
+
+footer.page-footer > nav {
+    padding : 0 10px;
+}
+
+footer.page-footer label{
+    color: #fff;
+}
+
+

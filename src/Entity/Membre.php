@@ -31,38 +31,44 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $password = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $nom = null;
+    public ?string $nom = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $prenom = null;
+	public ?string $prenom = null;
 
     #[ORM\ManyToOne(inversedBy: 'membres')]
-    private ?StatutPro $statut_professionnel = null;
+	public ?StatutPro $statut_professionnel = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $email = null;
+	public ?string $email = null;
 
     #[ORM\ManyToMany(targetEntity: ActivitePro::class, inversedBy: 'membres')]
-    private Collection $activites_pro;
+	public Collection $activites_pro;
 
     #[ORM\ManyToMany(targetEntity: CentreInteret::class, inversedBy: 'membres')]
-    private Collection $centres_interets;
+	public Collection $centres_interets;
 
     #[ORM\ManyToMany(targetEntity: Connaissance::class, inversedBy: 'membres')]
-    private Collection $connaissances;
+	public Collection $connaissances;
 
     #[ORM\ManyToMany(targetEntity: PratiqueAsso::class, inversedBy: 'membres')]
-    private Collection $pratiques_asso;
+	public Collection $pratiques_asso;
 
     #[ORM\Column(length: 255, nullable: true)]
-    private ?string $lien_web = null;
+	public ?string $lien_web = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     #[ORM\ManyToOne(inversedBy: 'membres')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Etat $etat = null;
+    public ?Etat $etat = null;
+
+    #[ORM\ManyToOne(inversedBy: 'membres')]
+    private ?Region $region = null;
+
+    #[ORM\ManyToOne(inversedBy: 'membres')]
+    private ?Municipio $municipio = null;
 
     public function __construct()
     {
@@ -318,6 +324,30 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEtat(?Etat $etat): self
     {
         $this->etat = $etat;
+
+        return $this;
+    }
+
+    public function getRegion(): ?Region
+    {
+        return $this->region;
+    }
+
+    public function setRegion(?Region $region): self
+    {
+        $this->region = $region;
+
+        return $this;
+    }
+
+    public function getMunicipio(): ?Municipio
+    {
+        return $this->municipio;
+    }
+
+    public function setMunicipio(?Municipio $municipio): self
+    {
+        $this->municipio = $municipio;
 
         return $this;
     }

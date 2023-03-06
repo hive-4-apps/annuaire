@@ -32,7 +32,7 @@ class ActivitePro
     private ?int $code_ogr = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $appelation_metier = null;
+    public ?string $appelation_metier = null;
 
     #[ORM\ManyToMany(targetEntity: Membre::class, mappedBy: 'activites_pro')]
     private Collection $membres;
