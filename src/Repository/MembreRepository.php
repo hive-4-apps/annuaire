@@ -5,6 +5,7 @@
 	use App\Entity\Etat;
 	use App\Entity\Membre;
 	use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+	use Doctrine\Common\Collections\Criteria;
 	use Doctrine\Persistence\ManagerRegistry;
 	use http\Client\Request;
 	use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
@@ -55,20 +56,73 @@
 
 		public function findAllPublishedMemberByRecentlyActive(\Symfony\Component\HttpFoundation\Request $request) {
 			$state_filter = $request->query->get('fr'); //fr = filtre region
+			$search_filter = $request->query->get('q'); //q = filtre query
 
 			$queryBuilder = $this->createQueryBuilder('m');
 			if (!empty($state_filter) && $state_filter !== 'BR') {
 				$queryBuilder
 					->leftJoin('m.region', 'region')
-					->andWhere('region.sigla = :sigla')
+					->where('region.sigla = :sigla')
 					->setParameter('sigla', $state_filter );
 			}
-			return $queryBuilder
+			if (!empty(trim($search_filter))) {
+				$items_filter = explode( ' ', trim($search_filter));
+
+				$queryBuilder->leftJoin('m.statut_professionnel', 'statut_professionnel');
+				$queryBuilder->leftJoin('m.activites_pro', 'activites_pro');
+				$queryBuilder->leftJoin('m.centres_interets', 'centres_interets');
+				$queryBuilder->leftJoin('m.connaissances', 'connaissances');
+				$queryBuilder->leftJoin('m.pratiques_asso', 'pratiques_asso');
+				$queryBuilder->leftJoin('m.municipio', 'municipio');
+				$orStatements = $queryBuilder->expr()->orX();
+				foreach ( $items_filter as $item_filter ){
+					if( !empty( trim($item_filter) )){
+						$queryBuilder->setParameter('key', '%' . trim($item_filter) . '%' );
+
+						$statutProfessionnelAndStatement = $queryBuilder->expr()->andX(
+							$queryBuilder->expr()->eq('statut_professionnel.etat', '2'),
+							$queryBuilder->expr()->like('statut_professionnel.label',':key')
+						);
+						$orStatements->add( $statutProfessionnelAndStatement );
+
+						$activitesProAndStatement = $queryBuilder->expr()->andX(
+							$queryBuilder->expr()->like('activites_pro.appelation_metier',  ':key')
+						);
+						$orStatements->add( $activitesProAndStatement );
+
+						$centreInteretAndStatement = $queryBuilder->expr()->andX(
+							$queryBuilder->expr()->eq('centres_interets.etat', '2'),
+							$queryBuilder->expr()->like('centres_interets.label',  ':key')
+						);
+						$orStatements->add( $centreInteretAndStatement );
+
+						$pratiquesAssoAndStatement = $queryBuilder->expr()->andX(
+							$queryBuilder->expr()->eq('pratiques_asso.etat', '2'),
+							$queryBuilder->expr()->like('pratiques_asso.label',  ':key')
+						);
+						$orStatements->add( $pratiquesAssoAndStatement );
+
+						$municipioAndStatement = $queryBuilder->expr()->andX(
+							$queryBuilder->expr()->like('municipio.nome',  ':key')
+						);
+						$orStatements->add( $municipioAndStatement );
+
+						$nameAndStatement = $queryBuilder->expr()->andX(
+							$queryBuilder->expr()->like('m.prenom',  ':key'),
+							$queryBuilder->expr()->like('m.nom',  ':key')
+						);
+						$orStatements->add( $nameAndStatement );
+					}
+				}
+				$queryBuilder->andWhere($orStatements);
+			}
+			$queryBuilder
 				->andWhere('m.etat = :etat')
 				->setParameter('etat', '2')
 				->orderBy('m.id', 'DESC')
-				->setMaxResults(10)
-				->getQuery()->getResult();
+				->setMaxResults(10);
+			// echo $queryBuilder->getQuery()->getSQL();
+			return $queryBuilder->getQuery()->getResult();
 
 		}
 

@@ -5,17 +5,24 @@ security:
     # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
     providers:
         # used to reload user from session & other features (e.g. switch_user)
-        app_user_provider:
+        backend_user_provider:
             entity:
                 class: App\Entity\Admin
                 property: username
+        app_user_provider:
+            entity:
+                class: App\Entity\Membre
+                property: username
+        chain_provider:
+            chain:
+                providers: [ backend_user_provider, app_user_provider ]
     firewalls:
         dev:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
         main:
             lazy: true
-            provider: app_user_provider
+            provider: chain_provider
             custom_authenticator: App\Security\AppAuthenticator
             entry_point: App\Security\AppAuthenticator
             logout:
@@ -33,7 +40,7 @@ security:
     # Note: Only the *first* access control that matches will be used
     access_control:
         - { path: "^/%env(ADMIN_LOGIN_PATH)%", roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+        - { path: "^/%env(ADMIN_PROFILE_PATH)%", roles: ROLE_USER }
 
 when@test:
     security:

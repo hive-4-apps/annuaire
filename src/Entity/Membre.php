@@ -70,6 +70,9 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\ManyToOne(inversedBy: 'membres')]
     private ?Municipio $municipio = null;
 
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $telephone = null;
+
     public function __construct()
     {
         $this->activites_pro = new ArrayCollection();
@@ -348,6 +351,18 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
     public function setMunicipio(?Municipio $municipio): self
     {
         $this->municipio = $municipio;
+
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(?string $telephone): self
+    {
+        $this->telephone = $telephone;
 
         return $this;
     }

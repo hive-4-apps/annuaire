@@ -1,17 +1,24 @@
+import TomSelect from 'tom-select';
+
 jQuery(function ($) {
     $(document).ready(function () {
         // $(".dropdown-trigger").dropdown();
-        $('select').formSelect();
 
+        //Seulement en admin
+        // $('select').formSelect();
 
         $(".filter-localization").on("change", function (){
             let langParam = getUrlParameter('lang');
             langParam = (langParam) ? langParam : 'fr'
-            // fr = filtre region
             let fr = $(this).val();
             let urlFiltre = "?lang=" + langParam;
             urlFiltre +=  '&fr=' + fr;
-
+            let queryParam = getUrlParameter('q');
+            if( !queryParam ){
+                queryParam = $('#search-input').val();
+            }
+            if( queryParam )
+                urlFiltre +=  '&q=' + queryParam;
             window.location.href = urlFiltre;
         });
 

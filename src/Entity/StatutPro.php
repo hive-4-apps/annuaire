@@ -16,7 +16,7 @@ class StatutPro
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $Label = null;
+    private ?string $label = null;
 
     #[ORM\Column]
     private ?int $ordre = null;
@@ -46,12 +46,12 @@ class StatutPro
 
     public function getLabel(): ?string
     {
-        return $this->Label;
+        return $this->label;
     }
 
-    public function setLabel(string $Label): self
+    public function setLabel(string $label): self
     {
-        $this->Label = $Label;
+        $this->label = $label;
 
         return $this;
     }

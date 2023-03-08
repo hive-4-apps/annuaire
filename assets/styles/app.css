@@ -38,6 +38,18 @@ body > main {
     flex: 1 0 auto;
 }
 
+.h4a-wrapper-field-indent.crop{
+    overflow: hidden;
+}
+
+.h4a-wrapper-field-indent > input{
+    margin-left: 72px !important;
+}
+
+.h4a-wrapper-field-indent > .helper-text{
+    margin-left: 72px !important;
+}
+
 body > main h2{
     font-size: 1.5em;
 }

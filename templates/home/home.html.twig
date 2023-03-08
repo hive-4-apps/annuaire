@@ -14,26 +14,7 @@
 {% block title %}{{ 'Annuaire des Français.e.s au Brésil' | trans }}{% endblock %}
 
 {% block body %}
-    <header class="page-header purple">
-        <nav class="purple">
-            <div class="nav-wrapper">
-                <ul class="left">
-                    <li>
-                        <a href="#!"><i class="fas fa-address-book"></i></a>
-                    </li>
-                </ul>
-                <div class="center">
-                    <h1>{{ 'Annuaire des Français.e.s' | trans }}</h1>
-                </div>
-                <ul class="right">
-                    <li class="hide-on-med-and-down"><a href="sass.html"><i
-                                    class="fa-solid fa-user-plus"></i> {{ 'S´ajouter à l´annuaire' | trans }}</a></li>
-                    <li><a href="sass.html"><i class="fa-solid fa-right-to-bracket"></i> <span
-                                    class="hide-on-med-and-down">{{ 'Se connecter' | trans }}</span></a></li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+    {% include 'common/header.html.twig' %}
     <main>
         <div class="row hide-on-med-and-down mt-2">
             <div class="col s12">
@@ -55,10 +36,14 @@
             <div class="col s12  m7">
                 <div class="row">
                     <div class="input-field col s12">
-                        <i class="material-icons prefix">search</i>
-                        <input type="text" id="autocomplete-input" class="autocomplete"
-                               placeholder="{{ 'Par profession, centre intérêt...' | trans }}">
-                        <label for="autocomplete-input">{{ 'Rechercher' | trans }}</label>
+                        <form action="{{ app.request.uri }}" method="get">
+                            <i class="material-icons prefix">search</i>
+                            <input type="hidden" name="fr" value="{{ app.request.get('fr') }}" />
+                            <input type="hidden" name="lang" value="{{ app.request.get('lang') }}" />
+                            <input type="text" id="search-input" name="q" class="autocomplete"
+                                   placeholder="{{ 'Par profession, centre intérêt...' | trans }}" value="{{ app.request.get('q') }}">
+                            <label for="autocomplete-input">{{ 'Rechercher' | trans }}</label>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -81,9 +66,9 @@
                 </p>
             </div>
             <div class="col m6 text-right hide-on-small-and-down">
-                <ul class="pagination">
+                <ul class="pagination ">
                     <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
-                    <li class="active"><a href="#!">1</a></li>
+                    <li class="active purple"><a href="#!">1</a></li>
                     <li class="waves-effect"><a href="#!">2</a></li>
                     <li class="waves-effect"><a href="#!">3</a></li>
                     <li class="waves-effect"><a href="#!">4</a></li>
@@ -105,7 +90,23 @@
                                             <i class="avatar-empty fa fa-user-circle"></i>
                                         </div>
                                         <div class="col s8">
-                                            <h3 class="card-title mt-1">{{ member.prenom | e }} {{ member.nom | e }}</h3>
+                                            <h3 class="card-title mt-1">{{ member.prenom | e }} {{ member.nom | e }}
+                                                {% if member.region.sigla is not empty or member.municipio.nome is not empty %}
+                                                <span class="badge">
+                                                    {% if member.municipio.nome is not empty %}
+                                                        {{ member.municipio.nome }}
+                                                    {% endif %}
+                                                    {% if member.region.sigla is not empty or member.municipio.nome is not empty %}
+                                                    -
+                                                    {% endif %}
+                                                    {% if member.region.sigla is not empty %}
+                                                        {{ member.region.sigla }}</span>
+                                                    {% endif %}
+                                                {% endif %}
+                                            </h3>
+                                            {% if member.statut_professionnel is not empty %}
+                                                <h4>{{ member.statut_professionnel | trans }}</h4>
+                                            {% endif %}
                                             {% if member.activites_pro is not empty %}
                                                 <h4>{{ 'Profession(s)' | trans }}</h4>
                                                 <ul>
@@ -161,29 +162,5 @@
             </div>
         </div>
     </main>
-    <footer class="page-footer purple">
-        <nav class="purple">
-            <div class="nav-wrapper">
-                <ul class="left">
-                    <li>
-                        <span class="switch left">
-                            <label>
-                                FR
-                                <input id="switch-country"
-                                       type="checkbox" {{ app.request.get('lang') == 'br' ? "Checked" }}>
-                                <span class="lever"></span>
-                                BR
-                            </label>
-                        </span>
-                        <input type="hidden" id="route_fr" value="{{ path('homepage', {lang: 'fr'}) }}"/>
-                        <input type="hidden" id="route_br" value="{{ path('homepage', {lang: 'br'}) }}"/>
-                    </li>
-                </ul>
-                <ul class="right hide-on-med-and-up">
-                    <li><a href="sass.html"><i class="fa-solid fa-user-plus"></i> {{ 'S´ajouter à l´annuaire' | trans }}
-                        </a></li>
-                </ul>
-            </div>
-        </nav>
-    </footer>
+    {% include 'common/footer.html.twig' %}
 {% endblock %}

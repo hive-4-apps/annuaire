@@ -1,0 +1,27 @@
+<footer class="page-footer purple">
+    <nav class="purple">
+        <div class="nav-wrapper">
+            <ul class="left">
+                <li>
+                        <span class="switch left">
+                            <label>
+                                FR
+                                <input id="switch-country"
+                                       type="checkbox" {{ app.request.get('lang') == 'br' ? "Checked" }}>
+                                <span class="lever"></span>
+                                BR
+                            </label>
+                        </span>
+                    <input type="hidden" id="route_fr" value="{{ path('homepage', {lang: 'fr'}) }}"/>
+                    <input type="hidden" id="route_br" value="{{ path('homepage', {lang: 'br'}) }}"/>
+                </li>
+            </ul>
+            <ul class="right hide-on-large-only hide-on-extra-large-only">
+                {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <li class="hide-on-large-only hide-on-extra-large-only"><a href="#"><i
+                                    class="fa-solid fa-user-plus"></i> {{ 'S´ajouter à l´annuaire' | trans }}</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+</footer>

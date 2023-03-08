@@ -1,0 +1,4 @@
+# config/routes/attributes.yaml
+ux_entity_autocomplete:
+  controller: ux.autocomplete.entity_autocomplete_controller
+  path: '/autocomplete/{alias}'

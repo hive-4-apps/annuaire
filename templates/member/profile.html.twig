@@ -1,0 +1,181 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ encore_entry_link_tags('app') }}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"
+          xmlns="http://www.w3.org/1999/html">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
+
+{% block title %}{{ 'Mes informations' | trans }} | {{ 'Annuaire des Français.e.s au Brésil' | trans }}{% endblock %}
+
+{% block body %}
+    {% include 'common/header.html.twig' %}
+    <main>
+        <form action="{{ path('app_profile_index') }}" method="post">
+            <div class="container">
+                <div class="row">
+                    <div class="col s12">
+                        <div class="card">
+                            <div class="card-content">
+                                <div class="row">
+                                    <div class="col s4">
+                                        <i class="avatar-empty fa fa-user-circle"></i>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12 h4a-wrapper-field-indent crop">
+                                        <i class="prefix fas fa-id-card"></i>
+                                        <input placeholder="{{ 'Prénom' | trans }}" id="first_name" type="text"
+                                               class="validate required" required value="{{ app.user.prenom }}"/>
+                                        <span class="helper-text" data-error="{{ 'Champ obligatoire' | trans }}"
+                                              data-success="✓">{{ 'Prénom' | trans }}</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12 h4a-wrapper-field-indent crop">
+                                        <input placeholder="{{ 'Nom' | trans }}" id="last_name" type="text"
+                                               class="validate required" required value="{{ app.user.nom }}"/>
+                                        <span class="helper-text" data-error="{{ 'Champ obligatoire' | trans }}"
+                                              data-success="✓">{{ 'Nom' | trans }}</span>
+                                    </div>
+                                </div>
+                                <hr/>
+                                <div class="row">
+                                    <div class="input-field col s12 h4a-wrapper-field-indent crop">
+                                        <i class="prefix fas fa-at"></i>
+                                        <input placeholder="{{ 'Email' | trans }}" id="email" type="email"
+                                               class="validate required" required value="{{ app.user.email }}"/>
+                                        <span class="helper-text" data-error="{{ 'Champ obligatoire' | trans }}"
+                                              data-success="✓">{{ 'Email' | trans }}</span>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12 h4a-wrapper-field-indent crop">
+                                        <i class="prefix fas fa-phone"></i>
+                                        <input placeholder="{{ 'Téléphone' | trans }}" id="first_name" type="tel"
+                                               class="validate" value="{{ app.user.telephone }}"/>
+                                        <span class="helper-text" data-error="{{ 'Numéro incorrect' | trans }}"
+                                              data-success="✓">{{ 'Téléphone' | trans }}</span>
+                                    </div>
+                                </div>
+                                <hr/>
+                                <div class="row">
+                                    <div class="input-field col s12 h4a-wrapper-field-indent">
+                                        <i class="prefix fas fa-map"></i>
+                                        <div style="margin-left: 74px;">
+                                            <select name="municipio" placeholder="{{ 'Municipalité' | trans }}"
+                                                    {{ stimulus_controller('symfony/ux-autocomplete/autocomplete', {
+                                                        url: path('ux_entity_autocomplete', { alias: 'municipio' }), value: 1
+                                                    }) }}
+                                            ></select>
+                                            <span class="helper-text"
+                                                  data-success="✓">{{ 'Municipalité' | trans }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12 h4a-wrapper-field-indent">
+                                        <div style="margin-left: 74px;">
+                                            <select name="estado" placeholder="{{ 'État' | trans }}"
+                                                    {{ stimulus_controller('symfony/ux-autocomplete/autocomplete', {
+                                                        url: path('ux_entity_autocomplete', { alias: 'region' })
+                                                    }) }}
+                                            ></select>
+                                            <span class="helper-text" data-success="✓">{{ 'État' | trans }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr/>
+                                <div class="row">
+                                    <div class="input-field col s12 h4a-wrapper-field-indent">
+                                        <i class="prefix fa fa-user-nurse"></i>
+                                        <div style="margin-left: 74px;">
+                                            <select name="statut_professionnel" multiple
+                                                    placeholder="{{ 'Situation professionnelle' | trans }}"
+                                                    {{ stimulus_controller('symfony/ux-autocomplete/autocomplete', {
+                                                        url: path('ux_entity_autocomplete', { alias: 'statut_professionnel' })
+                                                    }) }}
+                                            ></select>
+                                            <span class="helper-text"
+                                                  data-success="✓">{{ 'Situation professionnelle' | trans }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12 h4a-wrapper-field-indent">
+                                        <div style="margin-left: 74px;">
+                                            <select name="estado" placeholder="{{ 'Profession(s)' | trans }}"
+                                                    {{ stimulus_controller('symfony/ux-autocomplete/autocomplete', {
+                                                        url: path('ux_entity_autocomplete', { alias: 'activite_professionnelle' })
+                                                    }) }}
+                                            ></select>
+                                            <span class="helper-text"
+                                                  data-success="✓">{{ 'Profession(s)' | trans }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <hr/>
+                                <div class="row">
+                                    <div class="input-field col s12 h4a-wrapper-field-indent">
+                                        <i class="prefix fa fa-person-biking"></i>
+                                        <div style="margin-left: 74px;">
+                                            <select name="centres_interets" multiple
+                                                    placeholder="{{ 'Centres Intérêts' | trans }}"
+                                                    {{ stimulus_controller('symfony/ux-autocomplete/autocomplete', {
+                                                        url: path('ux_entity_autocomplete', { alias: 'centre_interet' })
+                                                    }) }}
+                                            ></select>
+                                            <span class="helper-text"
+                                                  data-success="✓">{{ 'Centres Intérêts' | trans }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12 h4a-wrapper-field-indent">
+                                        <i class="prefix fa fa-person-chalkboard"></i>
+                                        <div style="margin-left: 74px;">
+                                            <select name="centres_interets" multiple
+                                                    placeholder="{{ 'Connaissances' | trans }}"
+                                                    {{ stimulus_controller('symfony/ux-autocomplete/autocomplete', {
+                                                        url: path('ux_entity_autocomplete', { alias: 'connaissance' })
+                                                    }) }}
+                                            ></select>
+                                            <span class="helper-text"
+                                                  data-success="✓">{{ 'Connaissances' | trans }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s12 h4a-wrapper-field-indent">
+                                        <i class="prefix fa fa-people-group"></i>
+                                        <div style="margin-left: 74px;">
+                                            <select name="pratiques_associations" multiple
+                                                    placeholder="{{ 'Pratiques Asso.' | trans }}"
+                                                    {{ stimulus_controller('symfony/ux-autocomplete/autocomplete', {
+                                                        url: path('ux_entity_autocomplete', { alias: 'pratique_association' })
+                                                    }) }}
+                                            ></select>
+                                            <span class="helper-text"
+                                                  data-success="✓">{{ 'Pratiques Asso.' | trans }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col s12">
+                        <input class="waves-effect waves-light btn" type="submit" value="{{ 'Enregistrer les modifications' | trans }}">
+                    </div>
+                </div>
+            </div>
+        </form>
+    </main>
+    {% include 'common/footer.html.twig' %}
+{% endblock %}
