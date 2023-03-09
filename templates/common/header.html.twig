@@ -11,7 +11,7 @@
             </div>
             <ul class="right">
                 {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                <li class="hide-on-med-and-down"><a href="#"><i
+                <li class="hide-on-med-and-down"><a href="{{ path('app_subscription_index') }}"><i
                                 class="fa-solid fa-user-plus"></i> {{ 'S´ajouter à l´annuaire' | trans }}</a></li>
                 {% else %}
                     <li><a href="{{ path('app_profile_index') }}"><i

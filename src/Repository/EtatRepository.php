@@ -3,7 +3,9 @@
 namespace App\Repository;
 
 use App\Entity\Etat;
+use App\Enums\EtatEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -54,13 +56,15 @@ class EtatRepository extends ServiceEntityRepository
 //        ;
 //    }
 
-//    public function findOneBySomeField($value): ?Etat
-//    {
-//        return $this->createQueryBuilder('e')
-//            ->andWhere('e.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+	/**
+	 * @throws NonUniqueResultException
+	 */
+	public function getEtat(EtatEnum $etatEnum ): ?Etat
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.id = :val')
+            ->setParameter('val', $etatEnum->value)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

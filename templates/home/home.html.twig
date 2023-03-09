@@ -14,8 +14,9 @@
 {% block title %}{{ 'Annuaire des Français.e.s au Brésil' | trans }}{% endblock %}
 
 {% block body %}
-    {% include 'common/header.html.twig' %}
+    {{ include('common/header.html.twig') }}
     <main>
+        {{ include('common/modals/modal-contact.html.twig') }}
         <div class="row hide-on-med-and-down mt-2">
             <div class="col s12">
                 <div class="row center">
@@ -149,7 +150,20 @@
                                             <a class="waves-effect waves-light btn"><i class="fa fa-search-plus"></i> {{ 'Voir plus' | trans }}</a>
                                         </div>
                                         <div class="col s6 right-align">
-                                            <button class="btn-contact btn waves-effect waves-light" type="button"><i class="fa fa-message"></i> {{ 'Contacter' | trans }}</button>
+                                            {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                                <button class="btn-contact btn waves-effect waves-light btn modal-trigger" data-target="modal-contact" type="button"><i class="fa fa-message"></i> {{ 'Contacter' | trans }}</button>
+                                            {% else %}
+                                                {% if member.email %}
+                                                    <div>
+                                                        <a href="mailto:{{ member.email }}"><i class="fas fa-envelope"></i> {{ member.email }}</a>
+                                                    </div>
+                                                {% endif %}
+                                                {% if member.telephone %}
+                                                    <div>
+                                                        <a href="tel:{{ member.telephone }}"><i class="fas fa-phone"></i> {{ member.telephone }}</a>
+                                                    </div>
+                                                {% endif %}
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -162,5 +176,5 @@
             </div>
         </div>
     </main>
-    {% include 'common/footer.html.twig' %}
+    {{ include('common/footer.html.twig', {lang_switcher: true}) }}
 {% endblock %}

@@ -16,9 +16,7 @@
 {% block body %}
     {% include 'common/header.html.twig' %}
     <main>
-        <form action="{{ path('app_profile_index') }}" method="post">
-            {{ include('member/form/member-form.html.twig', { label_submit: 'Enregistrer les modifications' } ) }}
-        </form>
+        {{ include('member/form/member-form.html.twig', { submit_label : 'Demande d´ajout' }) }}
     </main>
     {% include 'common/footer.html.twig' %}
 {% endblock %}

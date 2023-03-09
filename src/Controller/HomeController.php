@@ -2,6 +2,7 @@
 
 	namespace App\Controller;
 
+	use App\Entity\DemandeContact;
 	use App\Entity\Membre;
 	use App\Entity\Region;
 	use Doctrine\ORM\EntityManagerInterface;
@@ -39,14 +40,20 @@
 		}
 
 		#[Route(['/', '/{lang<%app.supported_locales%>}/'], name: 'homepage')]
-		public function index(Request $request) {
+		public function index(Request $request, TranslatorInterface $translator ) {
 
 			$currentLocale = $this->localeSwitcher->getLocale();
 			$lang_param = $request->query->get('lang');
 			$chosen_lang = (!empty($lang_param)) ? $lang_param : $currentLocale;
 			$this->localeSwitcher->setLocale($chosen_lang);
 			$members_found = $this->memberRepo->findAllPublishedMemberByRecentlyActive($request);
-			return $this->render('home/home.html.twig', ['regions' => $this->regions, 'member_list' => $members_found, 'total_found' => count($members_found)]);
+			$label_contact_submit = $translator->trans('Envoyer la demande');
+			$demandeContact = new DemandeContact();
+			$form =$this->createForm(\App\Form\MemberContactFormType::class, $demandeContact );
+			$home_vars = ['regions' => $this->regions, 'member_list' => $members_found, 'total_found' => count($members_found), 'form' => $form, 'label_contact_submit' => $label_contact_submit];
+			$home_vars['form'] = $form->createView();
+
+			return $this->render('home/home.html.twig', $home_vars);
 		}
 
 	}

@@ -45,6 +45,10 @@ class ActivitePro
         $this->membres = new ArrayCollection();
     }
 
+	public function __toString(): string {
+		return $this->getAppelationMetier();
+	}
+
     public function getId(): ?int
     {
         return $this->id;

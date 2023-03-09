@@ -4,8 +4,15 @@ jQuery(function ($) {
     $(document).ready(function () {
         // $(".dropdown-trigger").dropdown();
 
-        //Seulement en admin
-        // $('select').formSelect();
+        $('#filter-desktop-localization').formSelect();
+
+        const elem1 = document.getElementById('modal-saved');
+        const instance1 = M.Modal.init(elem1, {dismissible: false});
+        if( instance1 !== null ){
+            instance1.open();
+        }
+        const elem2 = document.getElementById('modal-contact');
+        const instance2 = M.Modal.init(elem2, {dismissible: false});
 
         $(".filter-localization").on("change", function (){
             let langParam = getUrlParameter('lang');

@@ -1,0 +1,16 @@
+<div id="modal-contact" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col s11">
+                <h4>{{ 'Demande de contact' | trans }}</h4>
+            </div>
+            <div class="col s1 right-align">
+                <i class="modal-close fas fa-close"></i>
+            </div>
+        </div>
+        {{ include('member/form/demande-contact-member-form.html.twig', { submit_label: label_contact_submit } ) }}
+    </div>
+    {#<div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
+    </div>#}
+</div>
