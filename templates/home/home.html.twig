@@ -17,6 +17,7 @@
     {{ include('common/header.html.twig') }}
     <main>
         {{ include('common/modals/modal-contact.html.twig') }}
+        {{ include('common/modals/modal-sent-message.html.twig') }}
         <div class="row hide-on-med-and-down mt-2">
             <div class="col s12">
                 <div class="row center">
@@ -151,6 +152,7 @@
                                         </div>
                                         <div class="col s6 right-align">
                                             {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                                <input type="hidden" class="member-id" value="{{ member.email }}" />
                                                 <button class="btn-contact btn waves-effect waves-light btn modal-trigger" data-target="modal-contact" type="button"><i class="fa fa-message"></i> {{ 'Contacter' | trans }}</button>
                                             {% else %}
                                                 {% if member.email %}

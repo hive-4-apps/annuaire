@@ -126,6 +126,14 @@
 
 		}
 
+		public function getMemberByEmail( string $email ) : ?Membre{
+			$queryBuilder = $this->createQueryBuilder('m')
+				->where('m.email = :email')
+				->setParameter('email', $email);
+			return $queryBuilder->getQuery()->getOneOrNullResult();
+		}
+
+
 //    /**
 //     * @return Membre[] Returns an array of Membre objects
 //     */

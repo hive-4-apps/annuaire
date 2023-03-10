@@ -4,11 +4,13 @@ namespace App\Form;
 
 use App\Entity\DemandeContact;
 use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class MemberContactFormType extends AbstractType
@@ -21,6 +23,7 @@ class MemberContactFormType extends AbstractType
             ->add('email')
             ->add('telephone')
             ->add('motif_contact', TextareaType::class)
+			->add( 'member_email', HiddenType::class )
 			->add('save', SubmitType::class, [
 				'attr' => ['class' => 'save btn waves-effect waves-light']
 			]);

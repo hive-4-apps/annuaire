@@ -28,8 +28,25 @@ class DemandeContactRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+
+
     }
 
+	public function getEmailBody( DemandeContact $entity ) : string
+	{
+		$html = sprintf('<h1>Annuaire des Français.es au Brésil</h1>' );
+		$html .= sprintf('<h2>Demande de contact</h2>' );
+		$html .= sprintf('<p>Une personne souhaite prendre contact avec vous. Voici ces coordonnées : </p>' );
+		$html .= '<ul>';
+		$html .= sprintf('<li>Prénom Nom : %1$s %2$s</li>', $entity->getPrenom(), $entity->getNom() );
+		$html .= sprintf('<li>Email : %1$s</li>', $entity->getEmail() );
+		if( !empty( $entity->getTelephone() ) ){
+			$html .= sprintf('<li>Telephone : %1$s</li>', $entity->getTelephone() );
+		}
+		$html .= sprintf('<li>Motif contact : %1$s</li>', $entity->getMotifContact() );
+		$html .= '</ul>';
+		return $html;
+	}
     public function remove(DemandeContact $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);

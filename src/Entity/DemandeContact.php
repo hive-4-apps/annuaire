@@ -29,6 +29,9 @@ class DemandeContact
     #[ORM\Column(type: Types::TEXT)]
     private ?string $motif_contact = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $member_email = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -90,6 +93,18 @@ class DemandeContact
     public function setMotifContact(string $motif_contact): self
     {
         $this->motif_contact = $motif_contact;
+
+        return $this;
+    }
+
+    public function getMemberEmail(): ?string
+    {
+        return $this->member_email;
+    }
+
+    public function setMemberEmail(string $member_email): self
+    {
+        $this->member_email = $member_email;
 
         return $this;
     }

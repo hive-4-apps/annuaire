@@ -13,6 +13,11 @@ jQuery(function ($) {
         }
         const elem2 = document.getElementById('modal-contact');
         const instance2 = M.Modal.init(elem2, {dismissible: false});
+        const elem3 = document.getElementById('modal-sent');
+        const instance3 = M.Modal.init(elem3, {dismissible: false});
+        if( instance3 !== null ){
+            instance3.open();
+        }
 
         $(".filter-localization").on("change", function (){
             let langParam = getUrlParameter('lang');
@@ -41,6 +46,10 @@ jQuery(function ($) {
                href += '&fr=' + filtreRegionParam;
            }
             window.location.href = href;
+        });
+
+        $('.btn-contact').on( 'click', function () {
+            $('#member_contact_form_member_email').val( $(this).prev().val());
         });
     });
 });
