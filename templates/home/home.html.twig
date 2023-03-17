@@ -52,7 +52,7 @@
             <div class="col m5 hide-on-small-and-down">
                 <div class="row">
                     <div class="col s6 right-align" style="line-height: 75px;">
-                        <span>{{ 'Situé.e' | trans }}</span>
+                        <span>{{ 'Situé.e à/au' | trans }}</span>
                     </div>
                     <div class="input-field col s6 left-align">
                         {% include 'common/select-localization.html.twig' with { 'regions' : regions, 'device': 'desktop'} %}
@@ -67,7 +67,7 @@
                             class="french-count">{{ total_found }}</span>
                 </p>
             </div>
-            <div class="col m6 text-right hide-on-small-and-down">
+            {#<div class="col m6 text-right hide-on-small-and-down">
                 <ul class="pagination ">
                     <li class="disabled"><a href="#!"><i class="material-icons">chevron_left</i></a></li>
                     <li class="active purple"><a href="#!">1</a></li>
@@ -77,99 +77,14 @@
                     <li class="waves-effect"><a href="#!">5</a></li>
                     <li class="waves-effect"><a href="#!"><i class="material-icons">chevron_right</i></a></li>
                 </ul>
-            </div>
+            </div>#}
         </div>
         <div class="sm:overflow-y-auto">
             <div class="row">
                 {% if member_list is not empty %}
                     {% for member in member_list %}
                         <div class="col s12 m6">
-
-                            <div class="card">
-                                <div class="card-content">
-                                    <div class="row">
-                                        <div class="col s4">
-                                            <i class="avatar-empty fa fa-user-circle"></i>
-                                        </div>
-                                        <div class="col s8">
-                                            <h3 class="card-title mt-1">{{ member.prenom | e }} {{ member.nom | e }}
-                                                {% if member.region.sigla is not empty or member.municipio.nome is not empty %}
-                                                <span class="badge">
-                                                    {% if member.municipio.nome is not empty %}
-                                                        {{ member.municipio.nome }}
-                                                    {% endif %}
-                                                    {% if member.region.sigla is not empty or member.municipio.nome is not empty %}
-                                                    -
-                                                    {% endif %}
-                                                    {% if member.region.sigla is not empty %}
-                                                        {{ member.region.sigla }}</span>
-                                                    {% endif %}
-                                                {% endif %}
-                                            </h3>
-                                            {% if member.statut_professionnel is not empty %}
-                                                <h4>{{ member.statut_professionnel | trans }}</h4>
-                                            {% endif %}
-                                            {% if member.activites_pro is not empty %}
-                                                <h4>{{ 'Profession(s)' | trans }}</h4>
-                                                <ul>
-                                                    {% for activite_pro in member.activites_pro %}
-                                                        <li>{{ activite_pro.appelation_metier | trans }}</li>
-                                                    {% endfor %}
-                                                </ul>
-                                                <hr class="my-2"/>
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                    {% if member.centres_interets is not empty %}
-                                        <div class="chips">
-                                            <h4>{{ 'Centres d´intérêts' | trans }}</h4>
-                                            {% for centre_interet in member.centres_interets %}
-                                                <div class="chip">{{ centre_interet.label | trans }}</div>
-                                            {% endfor %}
-                                        </div>
-                                    {% endif %}
-                                    {% if member.centres_interets is not empty %}
-                                        <div class="chips">
-                                            <h4>{{ 'Connaissances' | trans }}</h4>
-                                            {% for connaissance in member.connaissances %}
-                                                <div class="chip">{{ connaissance.label | trans }}</div>
-                                            {% endfor %}
-                                        </div>
-                                    {% endif %}
-                                    {% if member.pratiques_asso is not empty %}
-                                        <div class="chips">
-                                            <h4>{{ 'Pratiques associatives/collectives' | trans }}</h4>
-                                            {% for pratique_asso in member.pratiques_asso %}
-                                                <div class="chip">{{ pratique_asso.label | trans }}</div>
-                                            {% endfor %}
-                                        </div>
-                                    {% endif %}
-                                </div>
-                                <div class="card-action">
-                                    <div class="row">
-                                        <div class="col s6 left-align">
-                                            <a class="waves-effect waves-light btn"><i class="fa fa-search-plus"></i> {{ 'Voir plus' | trans }}</a>
-                                        </div>
-                                        <div class="col s6 right-align">
-                                            {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                                                <input type="hidden" class="member-id" value="{{ member.email }}" />
-                                                <button class="btn-contact btn waves-effect waves-light btn modal-trigger" data-target="modal-contact" type="button"><i class="fa fa-message"></i> {{ 'Contacter' | trans }}</button>
-                                            {% else %}
-                                                {% if member.email %}
-                                                    <div>
-                                                        <a href="mailto:{{ member.email }}"><i class="fas fa-envelope"></i> {{ member.email }}</a>
-                                                    </div>
-                                                {% endif %}
-                                                {% if member.telephone %}
-                                                    <div>
-                                                        <a href="tel:{{ member.telephone }}"><i class="fas fa-phone"></i> {{ member.telephone }}</a>
-                                                    </div>
-                                                {% endif %}
-                                            {% endif %}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            {{ include('home/card/card-member.html.twig', {member: member}) }}
                         </div>
                     {% endfor %}
                 {% else %}

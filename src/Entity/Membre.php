@@ -2,13 +2,20 @@
 
 namespace App\Entity;
 
+use App\Enums\EtatEnum;
+use App\Repository\ConnaissanceRepository;
 use App\Repository\MembreRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: MembreRepository::class)]
 class Membre implements UserInterface, PasswordAuthenticatedUserInterface
@@ -72,14 +79,18 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $telephone = null;
+	private Request $request;
 
-    public function __construct()
-    {
-        $this->activites_pro = new ArrayCollection();
-        $this->centres_interets = new ArrayCollection();
-        $this->connaissances = new ArrayCollection();
-        $this->pratiques_asso = new ArrayCollection();
-    }
+    #[ORM\Column(type: 'uuid')]
+    private ?Uuid $reference = null;
+
+	public function __construct()
+                {
+            		$this->activites_pro = new ArrayCollection();
+                    $this->centres_interets = new ArrayCollection();
+                    $this->connaissances = new ArrayCollection();
+                    $this->pratiques_asso = new ArrayCollection();
+                }
 
     public function getId(): ?int
     {
@@ -231,6 +242,17 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->centres_interets;
     }
 
+	public function getApprovedCentresInterets( EntityManagerInterface $em ): Collection
+            	{
+            		$all_centresInterets = $this->getCentresInterets();
+            		foreach( $all_centresInterets as $key_centre_interet => $centre_interet ){
+            			if( $centre_interet->getEtat() !== $em->getRepository(Etat::class)->getEtat(EtatEnum::APPROUVE)){
+            				$all_centresInterets->remove($key_centre_interet);
+            			}
+            		}
+            		return $all_centresInterets;
+            	}
+
     public function addCentresInteret(CentreInteret $centresInteret): self
     {
         if (!$this->centres_interets->contains($centresInteret)) {
@@ -252,8 +274,19 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getConnaissances(): Collection
     {
-        return $this->connaissances;
+		return $this->connaissances;
     }
+
+	public function getApprovedConnaissances( EntityManagerInterface $em ): Collection
+                {
+            		$all_connaissances = $this->getConnaissances();
+            		foreach( $all_connaissances as $key_connaissance => $connaissance ){
+            			if( $connaissance->getEtat() !== $em->getRepository(Etat::class)->getEtat(EtatEnum::APPROUVE)){
+            				$all_connaissances->remove($key_connaissance);
+            			}
+            		}
+            		return $all_connaissances;
+                }
 
     public function addConnaissance(Connaissance $connaissance): self
     {
@@ -278,6 +311,17 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->pratiques_asso;
     }
+
+	public function getApprovedPratiquesAsso( EntityManagerInterface $em ): Collection
+            	{
+            		$all_pratiquesAsso = $this->getPratiquesAsso();
+            		foreach( $all_pratiquesAsso as $key_pratique_asso => $pratique_asso ){
+            			if( $pratique_asso->getEtat() !== $em->getRepository(Etat::class)->getEtat(EtatEnum::APPROUVE)){
+            				$all_pratiquesAsso->remove($key_pratique_asso);
+            			}
+            		}
+            		return $all_pratiquesAsso;
+            	}
 
     public function addPratiquesAsso(PratiqueAsso $pratiquesAsso): self
     {
@@ -363,6 +407,18 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
     public function setTelephone(?string $telephone): self
     {
         $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    public function getReference(): ?Uuid
+    {
+        return $this->reference;
+    }
+
+    public function setReference(Uuid $reference): self
+    {
+        $this->reference = $reference;
 
         return $this;
     }

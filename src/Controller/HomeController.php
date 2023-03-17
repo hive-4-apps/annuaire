@@ -34,14 +34,14 @@
 					[
 						'sigle' => 'BR',
 						'nom' => 'Brasil',
-						'libelle' => $translator->trans('au Brésil')
+						'libelle' => 'Brésil'
 					]
 			];
 			foreach ($data_regions as $data_region) {
 				$this->regions[] = [
 					'sigle' => $data_region->getSigla(),
 					'nom' => $data_region->getEstado(),
-					'libelle' => $data_region->getLabelWithPrefix()
+					'libelle' => $data_region->getLabelWithPrefix() //TODO : plus tard si besoin
 				];
 			}
 		}
@@ -54,7 +54,7 @@
 			$chosen_lang = (!empty($lang_param)) ? $lang_param : $currentLocale;
 			$this->localeSwitcher->setLocale($chosen_lang);
 			$members_found = $this->memberRepo->findAllPublishedMemberByRecentlyActive($request);
-			$label_contact_submit = $translator->trans('Envoyer la demande');
+			$label_contact_submit = 'Envoyer la demande';
 			$demandeContact = new DemandeContact();
 			$form = $this->createForm(\App\Form\MemberContactFormType::class, $demandeContact );
 			$home_vars = ['regions' => $this->regions, 'member_list' => $members_found, 'total_found' => count($members_found), 'form' => $form, 'label_contact_submit' => $label_contact_submit];

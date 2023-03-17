@@ -58,7 +58,7 @@
 			$state_filter = $request->query->get('fr'); //fr = filtre region
 			$search_filter = $request->query->get('q'); //q = filtre query
 
-			$queryBuilder = $this->createQueryBuilder('m');
+			$queryBuilder = $this->createQueryBuilder('m')->select('m');
 			if (!empty($state_filter) && $state_filter !== 'BR') {
 				$queryBuilder
 					->leftJoin('m.region', 'region')
@@ -120,16 +120,36 @@
 				->andWhere('m.etat = :etat')
 				->setParameter('etat', '2')
 				->orderBy('m.id', 'DESC')
-				->setMaxResults(10);
+				/*->setMaxResults(10)*/;
 			// echo $queryBuilder->getQuery()->getSQL();
-			return $queryBuilder->getQuery()->getResult();
-
+			/* @var Membre[] $result */
+			$result = $queryBuilder->getQuery()->getResult();
+			/* @var Membre[] $members */
+			$members = [];
+			if( !empty( $result ) ){
+				foreach ( $result as $item ){
+					$item->getApprovedConnaissances( $this->getEntityManager() );
+					$item->getApprovedCentresInterets( $this->getEntityManager() );
+					$item->getApprovedPratiquesAsso( $this->getEntityManager() );
+					$members[] = $item;
+				}
+			}
+			return $members;
 		}
 
 		public function getMemberByEmail( string $email ) : ?Membre{
 			$queryBuilder = $this->createQueryBuilder('m')
 				->where('m.email = :email')
 				->setParameter('email', $email);
+			return $queryBuilder->getQuery()->getOneOrNullResult();
+		}
+
+		public function getMemberByRef( string $reference ) : ?Membre{
+			$queryBuilder = $this->createQueryBuilder('m')
+				->where('m.reference = :reference')
+				->setParameter('reference', $reference);
+			var_dump($reference);
+			var_dump($queryBuilder->getQuery()->getSQL());
 			return $queryBuilder->getQuery()->getOneOrNullResult();
 		}
 

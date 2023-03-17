@@ -6,6 +6,7 @@
 	use App\Entity\Membre;
 	use App\Enums\EtatEnum;
 	use App\Form\type\MemberFormType;
+	use App\Repository\MembreRepository;
 	use Doctrine\ORM\EntityManagerInterface;
 	use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 	use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -15,15 +16,17 @@
 	use Symfony\Component\HttpFoundation\Request;
 	use Symfony\Component\HttpFoundation\Response;
 	use Symfony\Component\Routing\Annotation\Route;
+	use Symfony\Component\Translation\LocaleSwitcher;
+	use Symfony\Component\Uid\UuidV4;
 	use Symfony\Contracts\Translation\TranslatorInterface;
 
 	class MemberController extends AbstractController {
 
-		private object $memberRepo;
+		private MembreRepository $memberRepo;
 		private object $etatRepo;
 		private Security $security;
 
-		public function __construct( EntityManagerInterface $entityManager, Security $security ) {
+		public function __construct( EntityManagerInterface $entityManager, Security $security, private LocaleSwitcher $localeSwitcher ) {
 			$this->memberRepo = $entityManager->getRepository(Membre::class);
 			$this->etatRepo = $entityManager->getRepository(Etat::class);
 			$this->security = $security;
@@ -54,6 +57,7 @@
 				// ... save the meetup, redirect etc.
 				/* @var Membre $data*/
 				$data = $form->getData();
+				$data->setReference( UuidV4::v4() );
 				$this->memberRepo->save($data, true );
 				$subcription_vars['saved'] = true;
 			}
@@ -61,6 +65,17 @@
 			return $this->render('member/subscription.html.twig', $subcription_vars);
 		}
 
+
+		#[Route(['/membres/{reference}', '/membres/{lang<%app.supported_locales%>}/{refrence}'], name: 'app_subscription_show')]
+		public function show(Request $request) {
+			$currentLocale = $this->localeSwitcher->getLocale();
+			$lang_param = $request->query->get('lang');
+			$chosen_lang = (!empty($lang_param)) ? $lang_param : $currentLocale;
+			$this->localeSwitcher->setLocale($chosen_lang);
+			$member = $this->memberRepo->getMemberByRef( $request->attributes->get('reference') );
+			var_dump($member);
+			return $this->render('member/member.html.twig', [ 'membre', $member ]);
+		}
 
 
 		#[IsGranted('ROLE_USER')]

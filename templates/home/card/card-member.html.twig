@@ -1,0 +1,85 @@
+<div class="card">
+    <div class="card-content">
+        <div class="row">
+            <div class="col s4">
+                <i class="avatar-empty fa fa-user-circle"></i>
+            </div>
+            <div class="col s8">
+                <h3 class="card-title mt-1">{{ member.prenom | e }} {{ member.nom | e }}
+                    {% if member.region.sigla is not empty or member.municipio.nome is not empty %}
+                        <span class="badge">
+                        {% if member.municipio.nome is not empty %}
+                            {{ member.municipio.nome }}
+                        {% endif %}
+                        {% if member.region.sigla is not empty or member.municipio.nome is not empty %}
+                            -
+                        {% endif %}
+                        {% if member.region.sigla is not empty %}
+                            {{ member.region.sigla }}</span>
+                        {% endif %}
+                    {% endif %}
+                </h3>
+                {% if member.statut_professionnel is not empty %}
+                    <h4>{{ member.statut_professionnel | trans }}</h4>
+                {% endif %}
+                {% if member.activites_pro is not empty %}
+                    <h4>{{ 'Profession(s)' | trans }}</h4>
+                    <ul>
+                        {% for activite_pro in member.activites_pro %}
+                            <li>{{ activite_pro.appelation_metier | trans }}</li>
+                        {% endfor %}
+                    </ul>
+                    <hr class="my-2"/>
+                {% endif %}
+            </div>
+        </div>
+        {% if member.centres_interets is not empty %}
+            <div class="chips">
+                <h4>{{ 'Centres d´intérêts' | trans }}</h4>
+                {% for centre_interet in member.centres_interets %}
+                    <div class="chip">{{ centre_interet.label | trans }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if member.connaissances is not empty %}
+            <div class="chips">
+                <h4>{{ 'Connaissances' | trans }}</h4>
+                {% for connaissance in member.connaissances %}
+                    <div class="chip">{{ connaissance.label | trans }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+        {% if member.pratiques_asso is not empty %}
+            <div class="chips">
+                <h4>{{ 'Pratiques associatives/collectives' | trans }}</h4>
+                {% for pratique_asso in member.pratiques_asso %}
+                    <div class="chip">{{ pratique_asso.label | trans }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    <div class="card-action">
+        <div class="row">
+            <div class="col s6 left-align">
+                <a class="waves-effect waves-light btn" href="{{ path('app_subscription_show', {reference: member.reference}) }}"><i class="fa fa-search-plus"></i> {{ 'Voir plus' | trans }}</a>
+            </div>
+            <div class="col s6 right-align">
+                {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <input type="hidden" class="member-id" value="{{ member.email }}" />
+                    <button class="btn-contact btn waves-effect waves-light btn modal-trigger" data-target="modal-contact" type="button"><i class="fa fa-message"></i> {{ 'Contacter' | trans }}</button>
+                {% else %}
+                    {% if member.email %}
+                        <div>
+                            <a href="mailto:{{ member.email }}"><i class="fas fa-envelope"></i> {{ member.email }}</a>
+                        </div>
+                    {% endif %}
+                    {% if member.telephone %}
+                        <div>
+                            <a href="tel:{{ member.telephone }}"><i class="fas fa-phone"></i> {{ member.telephone }}</a>
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>

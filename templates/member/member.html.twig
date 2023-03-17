@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+    {{ encore_entry_link_tags('app') }}
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet"
+          xmlns="http://www.w3.org/1999/html">
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+    {{ encore_entry_script_tags('app') }}
+{% endblock %}
+
+{% block title %}{{ membre.prenom }} {{ membre.nom }} | {{ 'Annuaire des Français.e.s au Brésil' | trans }}{% endblock %}
+
+{% block body %}
+    {% include 'common/header.html.twig' %}
+    <main>
+        {{ membre.prenom }} {{ membre.nom }}
+    </main>
+    {% include 'common/footer.html.twig' %}
+{% endblock %}
+

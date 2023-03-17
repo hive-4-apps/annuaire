@@ -39,28 +39,30 @@ class CentreInteretRepository extends ServiceEntityRepository
         }
     }
 
-//    /**
-//     * @return CentreInteret[] Returns an array of CentreInteret objects
-//     */
-//    public function findByExampleField($value): array
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->orderBy('c.id', 'ASC')
-//            ->setMaxResults(10)
-//            ->getQuery()
-//            ->getResult()
-//        ;
-//    }
+    /**
+     * @return object[] Returns an array of CentreInteret labels
+     */
+    public function getAllLabels(): array
+    {
+        $output = [];
+		$find_all = $this->findAll();
+		if( !empty( $find_all ) ){
+			foreach ( $find_all as $centreInteret ){
+				$obj = new \stdClass();
+				$obj->value = $centreInteret->getLabel();
+				$obj->text = $centreInteret->getLabel();
+				$output[] = $obj;
+			}
+		}
+		return $output;
+    }
 
-//    public function findOneBySomeField($value): ?CentreInteret
-//    {
-//        return $this->createQueryBuilder('c')
-//            ->andWhere('c.exampleField = :val')
-//            ->setParameter('val', $value)
-//            ->getQuery()
-//            ->getOneOrNullResult()
-//        ;
-//    }
+    public function findOneByLabel($value): ?CentreInteret
+    {
+        return $this->createQueryBuilder('c')
+            ->andWhere('c.label = :val')
+            ->setParameter('val', $value)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
 }

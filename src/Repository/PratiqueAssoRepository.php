@@ -39,6 +39,24 @@ class PratiqueAssoRepository extends ServiceEntityRepository
         }
     }
 
+	/**
+	 * @return object[] Returns an array of PratiqueAsso labels
+	 */
+	public function getAllLabels(): array
+	{
+		$output = [];
+		$find_all = $this->findAll();
+		if( !empty( $find_all ) ){
+			foreach ( $find_all as $pratiqueAsso ){
+				$obj = new \stdClass();
+				$obj->value = $pratiqueAsso->getLabel();
+				$obj->text = $pratiqueAsso->getLabel();
+				$output[] = $obj;
+			}
+		}
+		return $output;
+	}
+
 //    /**
 //     * @return PratiqueAsso[] Returns an array of PratiqueAsso objects
 //     */

@@ -3,7 +3,12 @@
 namespace App\Repository;
 
 use App\Entity\Connaissance;
+use App\Entity\Etat;
+use App\Enums\EtatEnum;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Common\Collections\Criteria;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -38,6 +43,24 @@ class ConnaissanceRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+	/**
+	 * @return object[] Returns an array of Connaissance labels
+	 */
+	public function getAllLabels(): array
+	{
+		$output = [];
+		$find_all = $this->findAll();
+		if( !empty( $find_all ) ){
+			foreach ( $find_all as $connaissance ){
+				$obj = new \stdClass();
+				$obj->value = $connaissance->getLabel();
+				$obj->text = $connaissance->getLabel();
+				$output[] = $obj;
+			}
+		}
+		return $output;
+	}
 
 //    /**
 //     * @return Connaissance[] Returns an array of Connaissance objects

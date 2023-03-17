@@ -26,7 +26,7 @@ class Connaissance
 
     #[ORM\ManyToOne(inversedBy: 'connaissances')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Etat $etat = null;
+    public ?Etat $etat = null;
 
     public function __construct()
     {

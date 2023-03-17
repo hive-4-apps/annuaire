@@ -10,7 +10,7 @@
                 <h1><a href="{{ path('homepage') }}">{{ 'Annuaire des Français.e.s' | trans }}</a></h1>
             </div>
             <ul class="right">
-                {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') or 'ROLE_ADMIN' in app.user.roles %}
                 <li class="hide-on-med-and-down"><a href="{{ path('app_subscription_index') }}"><i
                                 class="fa-solid fa-user-plus"></i> {{ 'S´ajouter à l´annuaire' | trans }}</a></li>
                 {% else %}
@@ -21,7 +21,7 @@
                 <li><a href="{{ path('app_login') }}"><i class="fa-solid fa-right-to-bracket"></i> <span
                                 class="hide-on-med-and-down">{{ 'Se connecter' | trans }}</span></a></li>
                 {% else %}
-                    <li><a href="{{ path('app_logout') }}"><i class="fa-solid fa-right-from-bracket"></i> <span
+                    <li><a href="{{ path('app_logout') }}"><i class="fa-solid fa-right-from-bracket"></i>{% if 'ROLE_ADMIN' in app.user.roles %} <span>{{ app.user.username }}</span> - {% endif %}<span
                                     class="hide-on-med-and-down">{{ 'Se déconnecter' | trans }}</span></a></li>
                 {% endif %}
             </ul>
