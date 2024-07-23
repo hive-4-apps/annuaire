@@ -2,11 +2,14 @@
 
 	namespace App\Controller;
 
+	use App\Entity\DemandeContact;
 	use App\Entity\Etat;
 	use App\Entity\Membre;
 	use App\Enums\EtatEnum;
 	use App\Form\type\MemberFormType;
+	use App\Repository\DemandeContactRepository;
 	use App\Repository\MembreRepository;
+	use App\Service\CommonService;
 	use Doctrine\ORM\EntityManagerInterface;
 	use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 	use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -25,11 +28,15 @@
 		private MembreRepository $memberRepo;
 		private object $etatRepo;
 		private Security $security;
+		private CommonService $commonService;
+		private DemandeContactRepository $demandeContactRepo;
 
-		public function __construct( EntityManagerInterface $entityManager, Security $security, private LocaleSwitcher $localeSwitcher ) {
+		public function __construct( EntityManagerInterface $entityManager, Security $security, private LocaleSwitcher $localeSwitcher, CommonService $commonService ) {
 			$this->memberRepo = $entityManager->getRepository(Membre::class);
 			$this->etatRepo = $entityManager->getRepository(Etat::class);
 			$this->security = $security;
+			$this->commonService = $commonService;
+			$this->demandeContactRepo = $entityManager->getRepository(DemandeContact::class);
 		}
 
 		#[Route(['/inscription', '/inscription/{lang<%app.supported_locales%>}/'], name: 'app_subscription_index')]
@@ -52,7 +59,9 @@
 			$form =$this->createForm(\App\Form\MemberFormType::class, $member);
 			$subcription_vars = ['form' => $form->createView()];
 
+
 			$form->handleRequest($request);
+			// var_dump($form);
 			if ($form->isSubmitted() && $form->isValid()) {
 				// ... save the meetup, redirect etc.
 				/* @var Membre $data*/
@@ -61,7 +70,6 @@
 				$this->memberRepo->save($data, true );
 				$subcription_vars['saved'] = true;
 			}
-
 			return $this->render('member/subscription.html.twig', $subcription_vars);
 		}
 
@@ -73,15 +81,50 @@
 			$chosen_lang = (!empty($lang_param)) ? $lang_param : $currentLocale;
 			$this->localeSwitcher->setLocale($chosen_lang);
 			$member = $this->memberRepo->getMemberByRef( $request->attributes->get('reference') );
-			var_dump($member);
-			return $this->render('member/member.html.twig', [ 'membre', $member ]);
+			if( $member === null ){
+				$this->redirect('/');
+			}else{
+				$demandeContact = new DemandeContact();
+				$form = $this->createForm(\App\Form\MemberContactFormType::class, $demandeContact );
+				$url_fr = $this->commonService->getFrenchUrl( $request );
+				$url_br = $this->commonService->getBrazilianUrl( $request );
+				$form->handleRequest($request);
+				$member_vars = ['member' => $member, 'form' => $form, 'url_fr' => $url_fr, 'url_br' => $url_br];
+
+				if ($form->isSubmitted() && $form->isValid()) {
+					// ... save the meetup, redirect etc.
+					/* @var DemandeContact $data*/
+					$data = $form->getData();
+					$member_vars = $this->demandeContactRepo->doIt($data, true, $member_vars );
+				}
+				return $this->render('member/member.html.twig', $member_vars);
+			}
 		}
 
 
 		#[IsGranted('ROLE_USER')]
 		#[Route(['/profile', '/profile/{lang<%app.supported_locales%>}/'], name: 'app_profile_index')]
 		public function update(Request $request) {
-			return $this->render('member/profile.html.twig', []);
+			$member = $this->getUser();
+			if( $member === null ){
+				$this->redirect('/');
+			}else{
+				$form =$this->createForm(\App\Form\MemberFormType::class, $member);
+				$profile_vars = ['form' => $form->createView() ];
+
+
+				$form->handleRequest($request);
+				// var_dump($form);
+				if ($form->isSubmitted() && $form->isValid()) {
+					// ... save the meetup, redirect etc.
+					/* @var Membre $data*/
+					$data = $form->getData();
+					$this->memberRepo->save($data, true );
+					$profile_vars['updated'] = true;
+					$profile_vars = ['form' => $form->createView() ];
+				}
+				return $this->render('member/profile.html.twig',  $profile_vars);
+			}
 		}
 
 	}

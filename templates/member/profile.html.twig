@@ -11,13 +11,13 @@
     {{ encore_entry_script_tags('app') }}
 {% endblock %}
 
-{% block title %}{{ 'Mes informations' | trans }} | {{ 'Annuaire des Français.e.s au Brésil' | trans }}{% endblock %}
+{% block title %}{{ 'Mes informations' | trans }} | {{ 'Annuaire des Français·es au Brésil' | trans }}{% endblock %}
 
 {% block body %}
     {% include 'common/header.html.twig' %}
     <main>
         <form action="{{ path('app_profile_index') }}" method="post">
-            {{ include('member/form/member-form.html.twig', { label_submit: 'Enregistrer les modifications' } ) }}
+            {{ include('member/form/member-form.html.twig', { submit_label: 'Enregistrer les modifications' } ) }}
         </form>
     </main>
     {% include 'common/footer.html.twig' %}

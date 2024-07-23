@@ -9,6 +9,7 @@
 	use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 	use EasyCorp\Bundle\EasyAdminBundle\Dto\EntityDto;
 	use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
+	use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
 	use EasyCorp\Bundle\EasyAdminBundle\Field\EmailField;
 	use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
 	use EasyCorp\Bundle\EasyAdminBundle\Field\TelephoneField;
@@ -61,17 +62,18 @@
 			$fields[] = yield TelephoneField::new('telephone');
 			$fields[] = yield EmailField::new('email');
 			$fields[] = yield UrlField::new('lien_web');
-			$fields[] = yield AssociationField::new('municipio', 'Municipalité')->setFormTypeOption('choice_label', 'nome')->setRequired(false);
 			$fields[] = yield AssociationField::new('region', 'État')->setFormTypeOption('choice_label', 'estado')->setRequired(false);
+			$fields[] = yield AssociationField::new('municipio', 'Ville')->setFormTypeOption('choice_label', 'nome')->setRequired(false);
 			$fields[] = yield AssociationField::new('statut_professionnel', 'Statut Pro.')->setFormTypeOption('choice_label', 'label');
 			$fields[] = yield AssociationField::new('activites_pro', 'Métiers')->setFormTypeOption('choice_label', 'appelation_metier');
 			$fields[] = yield AssociationField::new('centres_interets', 'Centres d´Intérêts')
 				->setFormTypeOptions(
 					['choice_label' => 'label']
 				);
-			$fields[] = yield AssociationField::new('connaissances', 'Connaissances')->setFormTypeOption('choice_label', 'label');
-			$fields[] = yield AssociationField::new('pratiques_asso', 'Pratiques Associatives/Collectives')->setFormTypeOption('choice_label', 'label');
+			$fields[] = yield AssociationField::new('connaissances', 'Compétences et Savoirs')->setFormTypeOption('choice_label', 'label');
+			$fields[] = yield AssociationField::new('pratiques_asso', 'Activités Associatives/Collectives')->setFormTypeOption('choice_label', 'label');
 			$fields[] = yield AssociationField::new('etat', 'Statut')->setFormTypeOption('choice_label', 'label');
+			$fields[] = yield BooleanField::new('termsAndConditions', 'Je confirme mon accord sur les termes et conditions d\'utilisation')->setRequired(true);
 			return $fields;
 		}
 

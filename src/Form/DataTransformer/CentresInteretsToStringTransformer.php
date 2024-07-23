@@ -2,4 +2,8 @@
 
 	namespace App\Form\DataTransformer;
 
-	class CentresInteretsToStringTransformer extends DonneesToStringTransfromer {}
+	use App\Entity\CentreInteret;
+
+	class CentresInteretsToStringTransformer extends DonneesToStringTransfromer {
+		protected string $entityName = CentreInteret::class;
+	}

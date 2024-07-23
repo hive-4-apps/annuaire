@@ -18,8 +18,8 @@ class ConnaissanceCrudController extends AbstractCrudController
 	public function configureCrud(Crud $crud): Crud
 	{
 		return $crud
-			->setEntityLabelInSingular('Connaissance')
-			->setEntityLabelInPlural('Connaissances');
+			->setEntityLabelInSingular('Compétence/Savoir')
+			->setEntityLabelInPlural('Compétences/Savoirs');
 	}
 
 	public function configureFields(string $pageName): iterable

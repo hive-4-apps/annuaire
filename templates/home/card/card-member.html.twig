@@ -6,12 +6,12 @@
             </div>
             <div class="col s8">
                 <h3 class="card-title mt-1">{{ member.prenom | e }} {{ member.nom | e }}
-                    {% if member.region.sigla is not empty or member.municipio.nome is not empty %}
+                    {% if member.region.sigla is not empty or member.municipio is not empty %}
                         <span class="badge">
-                        {% if member.municipio.nome is not empty %}
+                        {% if member.municipio is not empty %}
                             {{ member.municipio.nome }}
                         {% endif %}
-                        {% if member.region.sigla is not empty or member.municipio.nome is not empty %}
+                        {% if ( member.region.sigla is not empty ) and ( member.municipio is not empty ) %}
                             -
                         {% endif %}
                         {% if member.region.sigla is not empty %}
@@ -51,7 +51,7 @@
         {% endif %}
         {% if member.pratiques_asso is not empty %}
             <div class="chips">
-                <h4>{{ 'Pratiques associatives/collectives' | trans }}</h4>
+                <h4>{{ 'Activités associatives/collectives' | trans }}</h4>
                 {% for pratique_asso in member.pratiques_asso %}
                     <div class="chip">{{ pratique_asso.label | trans }}</div>
                 {% endfor %}
@@ -61,11 +61,11 @@
     <div class="card-action">
         <div class="row">
             <div class="col s6 left-align">
-                <a class="waves-effect waves-light btn" href="{{ path('app_subscription_show', {reference: member.reference}) }}"><i class="fa fa-search-plus"></i> {{ 'Voir plus' | trans }}</a>
+                <a class="waves-effect waves-light btn" href="{{ path('app_subscription_show', {reference: member.reference, lang: app.request.get('lang')}) }}"><i class="fa fa-search-plus"></i> {{ 'Voir plus' | trans }}</a>
             </div>
             <div class="col s6 right-align">
                 {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                    <input type="hidden" class="member-id" value="{{ member.email }}" />
+                    <input type="hidden" class="member-id" value="{{ member.reference }}" />
                     <button class="btn-contact btn waves-effect waves-light btn modal-trigger" data-target="modal-contact" type="button"><i class="fa fa-message"></i> {{ 'Contacter' | trans }}</button>
                 {% else %}
                     {% if member.email %}

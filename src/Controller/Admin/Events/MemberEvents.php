@@ -51,13 +51,14 @@
 
 			$originalData = $this->em->getUnitOfWork()->getOriginalEntityData($entity);
 			if( $originalData['etat_id'] === 1 && $entity->getEtat()->getId() === 2 ){
-				$subject = 'Annuaire des Français - Compte approuvé !';
+				$subject = 'Annuaire des Français.e.s - Compte approuvé !';
 				$email = (new Email())
 					->from('contact@annuaire-fe.com.br')
 					->to( $entity->getEmail() )
 					->subject($subject)
 					->html( $this->getApprovedEmailBody($entity) );
 				try {
+					// $this->mailer->getDebug();
 					$this->mailer->send($email);
 					// die('envoi vers ' . $entity->getEmail() );
 				} catch (TransportExceptionInterface $e) {
@@ -72,7 +73,7 @@
 		}
 
 		private function getApprovedEmailBody(Membre $entity) {
-			$html = sprintf('<h1>Annuaire des Français.es au Brésil</h1>' );
+			$html = sprintf('<h1>Annuaire des Français·es au Brésil</h1>' );
 			$html .= sprintf('<h2>Votre compte a bien été approuvé</h2>' );
 			$html .= sprintf('<p>Vous faites partie désormais de l\'annuaire et vous pouvez éditer à tout moment votre profil en vous connectant avec votre identifiant et mot de passe que vous avez choisi lors de votre demande.</p>' );
 			$html .= '<br/><br/>>';

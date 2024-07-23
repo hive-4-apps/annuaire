@@ -11,7 +11,6 @@ use Doctrine\Persistence\ManagerRegistry;
  *
  * @method Municipio|null find($id, $lockMode = null, $lockVersion = null)
  * @method Municipio|null findOneBy(array $criteria, array $orderBy = null)
- * @method Municipio[]    findAll()
  * @method Municipio[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class MunicipioRepository extends ServiceEntityRepository
@@ -38,6 +37,19 @@ class MunicipioRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+		public function findAll()
+		{
+			return $this->findBy(array(), array('nome' => 'ASC'));
+		}
+
+		public function getAllMunicipiosWithoutDuplicate(): array
+		{
+			$queryBuilder = $this->createQueryBuilder('m')
+					->groupBy('m.nome')
+					->orderBy('m.nome', 'ASC');
+			return $queryBuilder->getQuery()->getResult();
+		}
 
 //    /**
 //     * @return Municipio[] Returns an array of Municipio objects

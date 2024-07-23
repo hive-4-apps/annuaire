@@ -2,4 +2,8 @@
 
 	namespace App\Form\DataTransformer;
 
-	class PratiquesAssoToStringTransformer extends DonneesToStringTransfromer {}
+	use App\Entity\PratiqueAsso;
+
+	class PratiquesAssoToStringTransformer extends DonneesToStringTransfromer {
+		protected string $entityName = PratiqueAsso::class;
+	}

@@ -58,8 +58,8 @@ class DashboardController extends AbstractDashboardController
 						MenuItem::linkToCrud('Statuts Pro.', 'fa fa-id-badge', StatutPro::class),
 						MenuItem::linkToCrud('Métiers', 'fa fa-user-nurse', ActivitePro::class),
 						MenuItem::linkToCrud('Centres Intérêts', 'fa fa-person-biking', CentreInteret::class),
-						MenuItem::linkToCrud('Connaissances', 'fa fa-person-chalkboard', Connaissance::class),
-						MenuItem::linkToCrud('Pratiques Asso.', 'fa fa-people-group', PratiqueAsso::class),
+						MenuItem::linkToCrud('Compétences et Savoirs', 'fa fa-person-chalkboard', Connaissance::class),
+						MenuItem::linkToCrud('Activités Asso.', 'fa fa-people-group', PratiqueAsso::class),
 					]);
     }
 }

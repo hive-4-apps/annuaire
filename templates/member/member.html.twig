@@ -10,13 +10,103 @@
     {{ encore_entry_script_tags('app') }}
 {% endblock %}
 
-{% block title %}{{ membre.prenom }} {{ membre.nom }} | {{ 'Annuaire des Français.e.s au Brésil' | trans }}{% endblock %}
+{% block title %}{{ member.prenom }} {{ member.nom }} | {{ 'Annuaire des Français·es au Brésil' | trans }}{% endblock %}
 
 {% block body %}
     {% include 'common/header.html.twig' %}
     <main>
-        {{ membre.prenom }} {{ membre.nom }}
+        {{ include('common/modals/modal-contact.html.twig', { label_contact_submit: 'Envoyer la demande' | trans }) }}
+        {{ include('common/modals/modal-sent-message.html.twig') }}
+        <div class="container">
+            <div class="row">
+                <div class="col s12">
+                    <a class="purple-text" href="{{ path( 'homepage', { lang : app.request.get('lang') } ) }}"><i class="fas fa-chevron-left"></i> {{ 'Retour à la liste' | trans }}</a>
+                    <div class="card">
+                        <div class="card-content">
+                            <div class="row">
+                                <div class="col s4">
+                                    <i class="avatar-empty fa fa-user-circle"></i>
+                                </div>
+                                <div class="col s8 right-align">
+                                    {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                                        <input type="hidden" class="member-id" value="{{ member.reference }}"/>
+                                        <button class="btn-contact btn waves-effect waves-light btn modal-trigger"
+                                                data-target="modal-contact" type="button"><i
+                                                    class="fa fa-message"></i> {{ 'Contacter' | trans }}</button>
+                                    {% else %}
+                                        {% if member.email %}
+                                            <div>
+                                                <a href="mailto:{{ member.email }}"><i
+                                                            class="fas fa-envelope"></i> {{ member.email }}</a>
+                                            </div>
+                                        {% endif %}
+                                        {% if member.telephone %}
+                                            <div>
+                                                <a href="tel:{{ member.telephone }}"><i
+                                                            class="fas fa-phone"></i> {{ member.telephone }}</a>
+                                            </div>
+                                        {% endif %}
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="row">
+                                <h2><i class="prefix fas fa-id-card"></i><span
+                                            class="mx-2">{{ member.prenom }} {{ member.nom }}</span></h2>
+                            </div>
+                            <hr class="mb-4"/>
+                            <div class="row">
+                                <i class="prefix fas fa-map"></i> <span
+                                        class="mx-2"> {% if member.municipio %}{{ member.municipio }} -  {% endif %}{{ member.region }}</span>
+                            </div>
+                            <hr lass="mb-4"/>
+                            {% if member.description %}
+                                <div class="row">
+                                    <p>{{ member.description }}</p>
+                                </div>
+                                <hr class="mb-4"/>
+                            {% endif %}
+                            {% if member.lien_web %}
+                            <div class="row">
+                                <i class="prefix fas fa-map"></i> <a title="{{ 'Site Web' | trans }}" href="{{ member.lien_web }}">{{ member.lien_web }}</a>
+                            </div>
+                            <hr lass="mb-4"/>
+                            {% endif %}
+                            {% if member.centres_interets is not empty %}
+                                <div class="row">
+                                    <div class="chips">
+                                        <h4>{{ 'Centres d´intérêts' | trans }}</h4>
+                                        {% for centre_interet in member.centres_interets %}
+                                            <div class="chip">{{ centre_interet.label | trans }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if member.connaissances is not empty %}
+                                <div class="row">
+                                    <div class="chips">
+                                        <h4>{{ 'Connaissances' | trans }}</h4>
+                                        {% for connaissance in member.connaissances %}
+                                            <div class="chip">{{ connaissance.label | trans }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                            {% if member.pratiques_asso is not empty %}
+                                <div class="row">
+                                    <div class="chips">
+                                        <h4>{{ 'Activités associatives/collectives' | trans }}</h4>
+                                        {% for pratique_asso in member.pratiques_asso %}
+                                            <div class="chip">{{ pratique_asso.label | trans }}</div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </main>
-    {% include 'common/footer.html.twig' %}
+    {{ include ('common/footer.html.twig', {lang_switcher: true}) }}
 {% endblock %}
 

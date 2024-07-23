@@ -7,11 +7,14 @@
 
 // any CSS you import will output into a single css file (app.css in this case)
 import './styles/app.css';
+import './styles/profile.css';
 
 //Materialize
 import "./styles/materialize.min.css";
 import './js/materialize.min';
 import './js/script';
+import './js/profile';
+import './js/home';
 
 //Fontawesome
 import "./styles/fa-all.min.css";

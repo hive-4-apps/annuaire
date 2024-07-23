@@ -1,28 +1,30 @@
-<header class="page-header purple">
-    <nav class="purple">
+<header class="page-header purple" style="height: 64px;">
+    <nav class="purple" style="height: 64px;">
         <div class="nav-wrapper">
             <ul class="left">
                 <li>
-                    <a href="{{ path('homepage') }}"><i class="fas fa-address-book"></i></a>
+                    <a href="{{ path('homepage') }}" style="line-height: 5rem;"><i class="fas fa-address-book" style="height: 2rem;"></i></a>
                 </li>
             </ul>
             <div class="center">
-                <h1><a href="{{ path('homepage') }}">{{ 'Annuaire des Français.e.s' | trans }}</a></h1>
+                <h1><a href="{{ path('homepage') }}">{{ 'Annuaire des Français.es' | trans }}</a></h1>
             </div>
             <ul class="right">
                 {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') or 'ROLE_ADMIN' in app.user.roles %}
-                <li class="hide-on-med-and-down"><a href="{{ path('app_subscription_index') }}"><i
+                <li class="hide-on-med-and-down"><a href="{{ path('app_subscription_index' ) }}"><i
                                 class="fa-solid fa-user-plus"></i> {{ 'S´ajouter à l´annuaire' | trans }}</a></li>
                 {% else %}
                     <li><a href="{{ path('app_profile_index') }}"><i
                                     class="fa-solid fa-user-circle"></i> <span class="hide-on-med-and-down">{{ app.user.prenom }} {{ app.user.nom }}</span></a></li>
                 {% endif %}
-                {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                <li><a href="{{ path('app_login') }}"><i class="fa-solid fa-right-to-bracket"></i> <span
-                                class="hide-on-med-and-down">{{ 'Se connecter' | trans }}</span></a></li>
-                {% else %}
-                    <li><a href="{{ path('app_logout') }}"><i class="fa-solid fa-right-from-bracket"></i>{% if 'ROLE_ADMIN' in app.user.roles %} <span>{{ app.user.username }}</span> - {% endif %}<span
-                                    class="hide-on-med-and-down">{{ 'Se déconnecter' | trans }}</span></a></li>
+                {% if login is not defined or login %}
+                    {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                    <li><a href="{{ path('app_login') }}"><i class="fa-solid fa-right-to-bracket"></i> <span
+                                    class="hide-on-med-and-down">{{ 'Se connecter' | trans }}</span></a></li>
+                    {% else %}
+                        <li><a href="{{ path('app_logout') }}"><i class="fa-solid fa-right-from-bracket"></i>{% if 'ROLE_ADMIN' in app.user.roles %} <span>{{ app.user.username }}</span> - {% endif %}<span
+                                        class="hide-on-med-and-down">{{ 'Se déconnecter' | trans }}</span></a></li>
+                    {% endif %}
                 {% endif %}
             </ul>
         </div>

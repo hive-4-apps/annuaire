@@ -8,9 +8,12 @@
 	use Doctrine\Common\Collections\Criteria;
 	use Doctrine\Persistence\ManagerRegistry;
 	use http\Client\Request;
+	use Symfony\Bridge\Doctrine\Types\UuidType;
+	use Symfony\Component\DependencyInjection\Parameter;
 	use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 	use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 	use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+	use Symfony\Component\Uid\Uuid;
 
 	/**
 	 * @extends ServiceEntityRepository<Membre>
@@ -59,11 +62,11 @@
 			$search_filter = $request->query->get('q'); //q = filtre query
 
 			$queryBuilder = $this->createQueryBuilder('m')->select('m');
-			if (!empty($state_filter) && $state_filter !== 'BR') {
+			if (!empty($state_filter) && strtoupper($state_filter) !== 'BR') {
 				$queryBuilder
 					->leftJoin('m.region', 'region')
 					->where('region.sigla = :sigla')
-					->setParameter('sigla', $state_filter );
+					->setParameter('sigla', strtoupper($state_filter) );
 			}
 			if (!empty(trim($search_filter))) {
 				$items_filter = explode( ' ', trim($search_filter));
@@ -145,11 +148,11 @@
 		}
 
 		public function getMemberByRef( string $reference ) : ?Membre{
+			$uuid = Uuid::fromString($reference);
+
 			$queryBuilder = $this->createQueryBuilder('m')
 				->where('m.reference = :reference')
-				->setParameter('reference', $reference);
-			var_dump($reference);
-			var_dump($queryBuilder->getQuery()->getSQL());
+				->setParameter('reference', $uuid->toBinary() );
 			return $queryBuilder->getQuery()->getOneOrNullResult();
 		}
 

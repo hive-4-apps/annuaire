@@ -13,10 +13,10 @@
 	use Symfony\Component\Form\Exception\TransformationFailedException;
 
 	abstract class DonneesToStringTransfromer implements DataTransformerInterface {
+		protected string $entityName;
 
 		public function __construct(private readonly EntityManagerInterface $entityManager)
-		{
-		}
+		{}
 
 		/**
 		 * Transforms an object (CentreInteret|Connaissance|PratiqueAsso) to a string.
@@ -39,7 +39,12 @@
 				return implode(',', $labels);
 			}
 
-			return $data_with_status->getLabel();
+			if ( method_exists( $data_with_status, 'getLabel') ){
+				return $data_with_status->getLabel();
+			}
+
+			return null;
+
 		}
 
 		/**
@@ -51,11 +56,10 @@
 		public function reverseTransform(mixed $value) {
 			// no centre_interet string? It's optional, so that's ok
 			if (!$value) {
-				return null;
+				return new ArrayCollection();
 			}
-
 			$dataWithStatusRepository = $this->entityManager
-				->getRepository(static::class);
+				->getRepository($this->entityName);
 
 			if( str_contains( $value, ',' ) ){
 				$str_centres_interets = explode(',', $value );
@@ -65,14 +69,16 @@
 				}
 				return $centres_interets;
 			}
-
-			return $this->getWithSaveDataWithStatus($dataWithStatusRepository, $value);
+            $collection = new ArrayCollection();
+			$entity = $this->getWithSaveDataWithStatus($dataWithStatusRepository, $value);
+			$collection->add($entity);
+			return $collection;
 		}
 
 		/**
 		 * @param \Doctrine\ORM\EntityRepository $dataWithStatusRepository
 		 * @param mixed $value
-		 * @return CentreInteret|null
+		 * @return CentreInteret|Connaissance|PratiqueAsso|null
 		 */
 		private function getWithSaveDataWithStatus(\Doctrine\ORM\EntityRepository $dataWithStatusRepository, mixed $value): CentreInteret|Connaissance|PratiqueAsso|null {
 			$data_With_status = $dataWithStatusRepository
@@ -80,7 +86,8 @@
 				->findOneByLabel($value);
 
 			if (null === $data_With_status) {
-				$data_With_status = new static();
+
+				$data_With_status = new $this->entityName();
 				$data_With_status->setLabel($value);
 				$etatRepository = $this->entityManager->getRepository(Etat::class);
 				$etat = $etatRepository->getEtat(EtatEnum::EN_ATTENTE);
@@ -88,5 +95,15 @@
 				$dataWithStatusRepository->save($data_With_status, true);
 			}
 			return $data_With_status;
+		}
+
+		public function __get($key)
+		{
+			if ( !isset(static::$$key))
+			{
+				throw new \Exception('Child class '.get_called_class().' failed to define static '.$key.' property');
+			}
+
+			return static::$$key;
 		}
 	}

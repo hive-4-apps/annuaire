@@ -11,12 +11,12 @@
     {{ encore_entry_script_tags('app') }}
 {% endblock %}
 
-{% block title %}{{ 'Mes informations' | trans }} | {{ 'Annuaire des Français.e.s au Brésil' | trans }}{% endblock %}
+{% block title %}{{ 'Mes informations' | trans }} | {{ 'Annuaire des Français·es au Brésil' | trans }}{% endblock %}
 
 {% block body %}
     {% include 'common/header.html.twig' %}
     <main>
         {{ include('member/form/member-form.html.twig', { submit_label : 'Demande d´ajout' }) }}
     </main>
-    {% include 'common/footer.html.twig' %}
+    {{ include('common/footer.html.twig', { login: false}) }}
 {% endblock %}

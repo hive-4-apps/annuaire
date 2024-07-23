@@ -26,6 +26,7 @@
 			return $repository
 				->createQueryBuilder('region')
 				->andWhere('region.estado LIKE :search')
+				->orderBy('region.estado','ASC')
 				->setParameter('search', '%'.$query.'%');
 		}
 

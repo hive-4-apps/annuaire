@@ -23,10 +23,15 @@
 		 * @inheritDoc
 		 */
 		public function createFilteredQueryBuilder(EntityRepository $repository, string $query): QueryBuilder {
-			return $repository
-				->createQueryBuilder('municipio')
-				->andWhere('municipio.nome LIKE :search')
-				->setParameter('search', '%'.$query.'%');
+			$query = $repository
+				->createQueryBuilder('mun')
+				->select('mun.nome')
+				->andWhere('mun.nome LIKE :search')
+				->setParameter('search', '%'.$query.'%')
+				->distinct();
+				/*->groupBy('municipio.nome')*/	;
+				die($query->getQuery()->getSQL());
+				return $query;
 		}
 
 		/**

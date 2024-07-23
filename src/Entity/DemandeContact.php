@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Repository\DemandeContactRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: DemandeContactRepository::class)]
 class DemandeContact
@@ -29,8 +30,8 @@ class DemandeContact
     #[ORM\Column(type: Types::TEXT)]
     private ?string $motif_contact = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $member_email = null;
+	#[ORM\Column(length: 255)]
+	public ?string $member_reference = null;
 
     public function getId(): ?int
     {
@@ -97,14 +98,14 @@ class DemandeContact
         return $this;
     }
 
-    public function getMemberEmail(): ?string
+    public function getMemberReference(): ?string
     {
-        return $this->member_email;
+        return $this->member_reference;
     }
 
-    public function setMemberEmail(string $member_email): self
+    public function setMemberReference(string $member_reference): self
     {
-        $this->member_email = $member_email;
+        $this->member_reference = $member_reference;
 
         return $this;
     }

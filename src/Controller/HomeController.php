@@ -5,6 +5,8 @@
 	use App\Entity\DemandeContact;
 	use App\Entity\Membre;
 	use App\Entity\Region;
+	use App\Repository\DemandeContactRepository;
+	use App\Service\CommonService;
 	use Doctrine\ORM\EntityManagerInterface;
 	use EasyCorp\Bundle\EasyAdminBundle\Field\HiddenField;
 	use Psr\Log\LoggerInterface;
@@ -21,10 +23,12 @@
 
 		private object $regionRepo;
 		private object $memberRepo;
-		private object $demandeContactRepo;
+		private DemandeContactRepository $demandeContactRepo;
 		public array $regions;
 
-		public function __construct(private LocaleSwitcher $localeSwitcher, EntityManagerInterface $entityManager, TranslatorInterface $translator) {
+		private CommonService $commonService;
+
+		public function __construct(private LocaleSwitcher $localeSwitcher, EntityManagerInterface $entityManager, TranslatorInterface $translator, CommonService $commonService) {
 			$this->regionRepo = $entityManager->getRepository(Region::class);
 			$this->memberRepo = $entityManager->getRepository(Membre::class);
 			$this->demandeContactRepo = $entityManager->getRepository(DemandeContact::class);
@@ -44,6 +48,7 @@
 					'libelle' => $data_region->getLabelWithPrefix() //TODO : plus tard si besoin
 				];
 			}
+			$this->commonService = $commonService;
 		}
 
 		#[Route(['/', '/{lang<%app.supported_locales%>}/'], name: 'homepage')]
@@ -57,34 +62,17 @@
 			$label_contact_submit = 'Envoyer la demande';
 			$demandeContact = new DemandeContact();
 			$form = $this->createForm(\App\Form\MemberContactFormType::class, $demandeContact );
-			$home_vars = ['regions' => $this->regions, 'member_list' => $members_found, 'total_found' => count($members_found), 'form' => $form, 'label_contact_submit' => $label_contact_submit];
+			$url_fr = $this->commonService->getFrenchUrl( $request );
+			$url_br = $this->commonService->getBrazilianUrl( $request );
+			$home_vars = ['regions' => $this->regions, 'member_list' => $members_found, 'total_found' => count($members_found), 'form' => $form, 'label_contact_submit' => $label_contact_submit, 'url_fr' => $url_fr, 'url_br' => $url_br];
 			$home_vars['form'] = $form->createView();
+
 			$form->handleRequest($request);
 			if ($form->isSubmitted() && $form->isValid()) {
 				// ... save the meetup, redirect etc.
 				/* @var DemandeContact $data*/
 				$data = $form->getData();
-				$this->demandeContactRepo->save($data, true );
-				$home_vars['member_concerned'] = $this->memberRepo->getMemberByEmail( $data->getMemberEmail() );
-				$home_vars['saved'] = true;
-				$subject = 'Demande de contactsur l´annuaire de français du Brésil !';
-				$email = (new Email())
-					->from('contact@annuaire-fe.com.br')
-					->to( $data->getMemberEmail() )
-					->subject($subject)
-					->html( $this->demandeContactRepo->getEmailBody($data) );
-				try {
-					$mailer->send($email);
-					$home_vars['sent'] = true;
-				} catch (TransportExceptionInterface $e) {
-					$log = sprintf('Email non envoyé - demande de contact nº %1$s - erreur : [%2$s] %3$s',
-						$data->getId(),
-						$e->getCode(),
-					    $e->getMessage()
-					);
-					$logger->error($log);
-					$home_vars['sent'] = false;
-				}
+				$home_vars = $this->demandeContactRepo->doIt($data, true, $home_vars );
 			}
 			return $this->render('home/home.html.twig', $home_vars);
 		}

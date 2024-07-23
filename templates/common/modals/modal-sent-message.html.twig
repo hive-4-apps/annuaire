@@ -1,27 +1,40 @@
-{% if saved is defined and saved %}
+{% if submitted is defined and submitted %}
 <div id="modal-sent" class="modal">
     <div class="modal-content">
         <div class="row">
             <div class="col s11">
-                <h4>{% if sent is defined and sent %}{{ 'Demande envoyée' | trans }}{% else %}{{ 'Demande enregistrée' | trans }}{% endif %}</h4>
+                {% if alreadyExists %}
+                    <h4>{{ 'Demande déjà enregistrée' | trans }}</h4>
+                {%  else %}
+                    <h4>{% if sent is defined and sent %}{{ 'Demande envoyée' | trans }}{% else %}{{ 'Demande enregistrée' | trans }}{% endif %}</h4>
+                {% endif %}
             </div>
             <div class="col s1 right-align">
                 <i class="modal-close fas fa-close"></i>
             </div>
         </div>
         <div class="row">
-            <div class="col s4 center-align">
-                <i class="avatar-empty fa fa-check-circle" style="color:#2bbbad; font-size: 3rem;"></i>
-            </div>
-            <div class="col s8">
-                {% if sent is defined and sent %}
-                    <p>{{ 'La demande a bien été envoyée à ' | trans }} {{ member_concerned.prenom }} {{ member_concerned.nom }}</p>
-                {% else %}
-                    <p>{{ 'Nous avons bien enregistré votre demande et nous transmettrons celle-ci à ' | trans }} {{ member_concerned.prenom }} {{ member_concerned.nom }}</p>
-                {% endif %}
-                <br/>
-                <p>{{ 'Il vous recontactera s´il le souhaite' | trans }}</p>
-            </div>
+            {% if alreadyExists %}
+                <div class="col s4 center-align">
+                    <i class="avatar-empty fa fa-check-circle" style="color:#2bbbad; font-size: 3rem;"></i>
+                </div>
+                <div class="col s8">
+                    <p>{{ 'La/le membre vous recontactera si elle/il le souhaite' | trans }}</p>
+                </div>
+            {% else %}
+                <div class="col s4 center-align">
+                    <i class="avatar-empty fa fa-check-circle" style="color:#2bbbad; font-size: 3rem;"></i>
+                </div>
+                <div class="col s8">
+                    {% if sent is defined and sent %}
+                        <p>{{ 'La demande a bien été envoyée à' | trans }} {{ member_concerned.prenom }} {{ member_concerned.nom }}</p>
+                    {% else %}
+                        <p>{{ 'Nous avons bien enregistré votre demande et nous transmettrons celle-ci à' | trans }} {{ member_concerned.prenom }} {{ member_concerned.nom }}</p>
+                    {% endif %}
+                    <br/>
+                    <p>{{ 'Elle/Il vous recontactera si elle/il le souhaite' | trans }}</p>
+                </div>
+            {%  endif %}
         </div>
     </div>
     <div class="modal-footer center-align">

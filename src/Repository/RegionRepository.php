@@ -11,7 +11,6 @@ use Doctrine\Persistence\ManagerRegistry;
  *
  * @method Region|null find($id, $lockMode = null, $lockVersion = null)
  * @method Region|null findOneBy(array $criteria, array $orderBy = null)
- * @method Region[]    findAll()
  * @method Region[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class RegionRepository extends ServiceEntityRepository
@@ -38,6 +37,11 @@ class RegionRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+		public function findAll()
+		{
+			return $this->findBy(array(), array('estado' => 'ASC'));
+		}
 
 //    /**
 //     * @return Region[] Returns an array of Region objects

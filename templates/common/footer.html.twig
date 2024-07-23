@@ -13,16 +13,19 @@
                             BR
                         </label>
                     </span>
-                        <input type="hidden" id="route_fr" value="{{ path('homepage', {lang: 'fr'}) }}"/>
-                        <input type="hidden" id="route_br" value="{{ path('homepage', {lang: 'br'}) }}"/>
+                        <input type="hidden" id="route_fr" value="{{ url_fr }}"/>
+                        <input type="hidden" id="route_br" value="{{ url_br }}"/>
                     </li>
                 </ul>
             {% endif %}
             <ul class="right hide-on-large-only hide-on-extra-large-only">
-                {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
-                    <li class="hide-on-large-only hide-on-extra-large-only"><a
-                                href="{{ path('app_subscription_index') }}"><i
-                                    class="fa-solid fa-user-plus"></i> {{ 'S´ajouter à l´annuaire' | trans }}</a></li>
+                {% if login is not defined or login %}
+                    {% if not is_granted('IS_AUTHENTICATED_REMEMBERED') %}
+                        <li class="hide-on-large-only hide-on-extra-large-only"><a
+                                    href="{{ path('app_subscription_index') }}"><i
+                                        class="fa-solid fa-user-plus"></i> {{ 'S´ajouter à l´annuaire' | trans }}</a>
+                        </li>
+                    {% endif %}
                 {% endif %}
             </ul>
         </div>

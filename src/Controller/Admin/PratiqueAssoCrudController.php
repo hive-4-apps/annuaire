@@ -18,8 +18,8 @@ class PratiqueAssoCrudController extends AbstractCrudController
 	public function configureCrud(Crud $crud): Crud
 	{
 		return $crud
-			->setEntityLabelInSingular('Pratique Associative/Collective')
-			->setEntityLabelInPlural('Pratiques Associatives/Collectives');
+			->setEntityLabelInSingular('Activité Associative/Collective')
+			->setEntityLabelInPlural('Activités Associatives/Collectives');
 	}
 
 	public function configureFields(string $pageName): iterable

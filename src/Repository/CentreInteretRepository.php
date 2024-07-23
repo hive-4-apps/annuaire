@@ -23,7 +23,7 @@ class CentreInteretRepository extends ServiceEntityRepository
 
     public function save(CentreInteret $entity, bool $flush = false): void
     {
-        $this->getEntityManager()->persist($entity);
+		$this->getEntityManager()->persist($entity);
 
         if ($flush) {
             $this->getEntityManager()->flush();

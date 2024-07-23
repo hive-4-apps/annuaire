@@ -1,6 +1,8 @@
 <div class="container">
     <div class="row">
         <div class="col s12">
+            <a class="purple-text" href="{{ path( 'homepage', { lang : app.request.get('lang') } ) }}"><i
+                        class="fas fa-chevron-left"></i> {{ 'Retour à la liste' | trans }}</a>
             <div class="card">
                 {% if saved is defined and saved %}
                     <div id="modal-saved" class="modal">
@@ -18,36 +20,76 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <a href="{{ path( 'homepage' ) }}" class="modal-close waves-effect waves-green btn">Ok merci !</a>
+                            <a href="{{ path( 'homepage' ) }}" class="modal-close waves-effect waves-green btn">Ok merci
+                                !</a>
                         </div>
                     </div>
                 {% endif %}
                 {% if form is defined %}
                     {{ form_start(form) }}
                     <div class="card-content">
-
-                        <div class="my-custom-class-for-errors">
-                            {{ form_errors(form) }}
+                        {% if updated is defined and updated %}
+                            <div class="alert alert-success" role="alert">
+                                <p>Vos informations ont bien été modifiées</p>
+                            </div>
+                        {% endif %}
+                        {% if form_errors(form) %}
+                            <div class="alert alert-danger" role="alert">
+                                {{ form_errors(form) }}
+                            </div>
+                        {% endif %}
+                        <div class="row">
+                            <fieldset>
+                                <legend><b>Avis important sur l’utilisation de vos données personnelles</b></legend>
+                                <p><em>
+                                        Ce formulaire a pour but de réunir les informations nécessaires à votre
+                                        inscription sur l’annuaire des Français·es du Brésil.<br/><br/>
+                                        L’objectif de cet annuaire et de faciliter la mise en relation des membres de la
+                                        communauté française et francophone du Brésil, en mettant à dispositions des
+                                        informations personnelles et professionnelles limitées.<br/><br/>
+                                        Avant de remplir ce formulaire, il est fondamental que vous compreniez que les
+                                        informations fournies (comme le nom, la ville, la profession) seront accessibles
+                                        à n’importe qui, par l’intermédiaire de notre site web, indépendamment de
+                                        l’enregistrement ou de l’identification préalable du visiteur.<br/><br/>
+                                        En remplissant et soumettant ce formulaire, vous donnez votre accord sur
+                                        l’inclusion de vos données dans l’annuaire, vous êtes scient que nous ne pouvons
+                                        garantir une sécurité totale concernant l’exposition des données sur l’internet
+                                        et que nous ne nous responsabilisons pas d’une éventuelle utilisation abusive de
+                                        ces informations par des tiers.<br/><br/>
+                                        Si vous avez des doutes ou préoccupations au sujet de la privacité de vos
+                                        données, évaluez avec précaution les informations que vous souhaitez exposer de
+                                        manière publique, avant de les soumettre pour insertion dans l’annuaire.<br/><br/>
+                                        Vous pourrez cependant exclure des informations de l’annuaire quand vous le
+                                        souhaiterez.
+                                    </em>
+                                </p>
+                            </fieldset>
                         </div>
                         <div class="row">
-                            <div class="col s4">
+                            <div class="col col-sm-12 col-lg-4">
                                 <i class="avatar-empty fa fa-user-circle"></i>
                             </div>
-                            <div class="col s8">
+                            <div class="col col-sm-12 col-lg-8">
                                 <div class="row">
                                     <div class="input-field col s1">
                                         <i class="prefix fas fa-user-lock"></i>
                                     </div>
-                                    <div class="input-field col s11">
-                                        {{ form_row(form.username) }}
+                                    <div class="input-field col s11" style="padding-left: 3rem;">
+                                        {{ form_row(form.username, { 'required': true }) }}
                                     </div>
                                 </div>
                                 <div class="row">
                                     <div class="input-field col s1">
                                         <i class="prefix fas fa-key"></i>
                                     </div>
-                                    <div class="input-field col s11">
-                                        {{ form_row(form.password) }}
+                                    <div class="input-field col s11" style="padding-left: 3rem;">
+                                        {% if app.current_route == 'app_profile_index' %}
+                                            <button id="btn-toggle-password" type="button"
+                                                    class="btn waves-effect waves-light">Changer de mot de passe
+                                            </button>
+                                        {% endif %}
+                                        {{ form_row(form.password.first, { 'required': true }) }}
+                                        {{ form_row(form.password.second, { 'required': true }) }}
                                     </div>
                                 </div>
                             </div>
@@ -56,21 +98,21 @@
                             <div class="input-field col s1">
                                 <i class="prefix fas fa-id-card"></i>
                             </div>
-                            <div class="input-field col s11">
-                                {{ form_row(form.prenom) }}
+                            <div class="input-field col s11" style="padding-left: 3rem;">
+                                {{ form_row(form.prenom, { 'required': true }) }}
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s1"></div>
-                            <div class="input-field col s11">
-                                {{ form_row(form.nom) }}
+                            <div class="input-field col s11" style="padding-left: 3rem;">
+                                {{ form_row(form.nom, { 'required': true }) }}
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s1">
                                 <i class="prefix fas fa-pen-nib"></i>
                             </div>
-                            <div class="input-field col s11">
+                            <div class="input-field col s11" style="padding-left: 3rem;">
                                 {{ form_row(form.description) }}
                             </div>
                         </div>
@@ -79,15 +121,15 @@
                             <div class="input-field col s1">
                                 <i class="prefix fas fa-at"></i>
                             </div>
-                            <div class="input-field col s11">
-                                {{ form_row(form.email) }}
+                            <div class="input-field col s11" style="padding-left: 3rem;">
+                                {{ form_row(form.email, { 'required': true }) }}
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s1">
                                 <i class="prefix fas fa-phone"></i>
                             </div>
-                            <div class="input-field col s11">
+                            <div class="input-field col s11" style="padding-left: 3rem;">
                                 {{ form_row(form.telephone) }}
                             </div>
                         </div>
@@ -95,7 +137,7 @@
                             <div class="input-field col s1">
                                 <i class="prefix fas fa-globe"></i>
                             </div>
-                            <div class="input-field col s11">
+                            <div class="input-field col s11" style="padding-left: 3rem;">
                                 {{ form_row(form.lien_web) }}
                             </div>
                         </div>
@@ -104,14 +146,14 @@
                             <div class="input-field col s1">
                                 <i class="prefix fas fa-map"></i>
                             </div>
-                            <div class="input-field col s11">
-                                {{ form_row(form.municipio) }}
+                            <div class="input-field col s11" style="padding-left: 3rem;">
+                                {{ form_row(form.region) }}
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s1"></div>
-                            <div class="input-field col s11">
-                                {{ form_row(form.region) }}
+                            <div class="input-field col s11" style="padding-left: 3rem;">
+                                {{ form_row(form.municipio) }}
                             </div>
                         </div>
                         <hr/>
@@ -119,14 +161,14 @@
                             <div class="input-field col s1">
                                 <i class="prefix fa fa-user-nurse"></i>
                             </div>
-                            <div class="input-field col s11">
+                            <div class="input-field col s11" style="padding-left: 3rem;">
                                 {{ form_row(form.statut_professionnel) }}
                             </div>
                         </div>
                         <div class="row">
                             <div class="input-field col s1">
                             </div>
-                            <div class="input-field col s11">
+                            <div class="input-field col s11" style="padding-left: 3rem;">
                                 {{ form_row(form.activites_pro) }}
                             </div>
                         </div>
@@ -135,7 +177,7 @@
                             <div class="input-field col s1">
                                 <i class="prefix fa fa-person-biking"></i>
                             </div>
-                            <div class="input-field col s11">
+                            <div class="input-field col s11" style="padding-left: 3rem;">
                                 {{ form_row(form.centres_interets) }}
                             </div>
                         </div>
@@ -143,7 +185,7 @@
                             <div class="input-field col s1">
                                 <i class="prefix fa fa-person-chalkboard"></i>
                             </div>
-                            <div class="input-field col s11">
+                            <div class="input-field col s11" style="padding-left: 3rem;">
                                 {{ form_row(form.connaissances) }}
                             </div>
                         </div>
@@ -151,8 +193,15 @@
                             <div class="input-field col s1">
                                 <i class="prefix fa fa-people-group"></i>
                             </div>
-                            <div class="input-field col s11">
+                            <div class="input-field col s11" style="padding-left: 3rem;">
                                 {{ form_row(form.pratiques_asso) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="input-field col s1">
+                            </div>
+                            <div class="input-field col s11" style="padding-left: 3rem;">
+                                {{ form_row(form.termsAndConditions) }}
                             </div>
                         </div>
                     </div>

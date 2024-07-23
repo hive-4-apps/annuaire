@@ -23,7 +23,7 @@ class MemberContactFormType extends AbstractType
             ->add('email')
             ->add('telephone')
             ->add('motif_contact', TextareaType::class)
-			->add( 'member_email', HiddenType::class )
+			->add( 'member_reference', HiddenType::class )
 			->add('save', SubmitType::class, [
 				'attr' => ['class' => 'save btn waves-effect waves-light']
 			]);

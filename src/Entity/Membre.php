@@ -3,13 +3,10 @@
 namespace App\Entity;
 
 use App\Enums\EtatEnum;
-use App\Repository\ConnaissanceRepository;
 use App\Repository\MembreRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\Criteria;
 use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\Request;
@@ -26,7 +23,7 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
-    private ?string $username = null;
+    public ?string $username = null;
 
     #[ORM\Column]
     private array $roles = [];
@@ -79,18 +76,20 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $telephone = null;
-	private Request $request;
 
     #[ORM\Column(type: 'uuid')]
     private ?Uuid $reference = null;
 
+    #[ORM\Column]
+    private ?bool $termsAndConditions = null;
+
 	public function __construct()
-                {
-            		$this->activites_pro = new ArrayCollection();
-                    $this->centres_interets = new ArrayCollection();
-                    $this->connaissances = new ArrayCollection();
-                    $this->pratiques_asso = new ArrayCollection();
-                }
+                         {
+                     		$this->activites_pro = new ArrayCollection();
+                             $this->centres_interets = new ArrayCollection();
+                             $this->connaissances = new ArrayCollection();
+                             $this->pratiques_asso = new ArrayCollection();
+                         }
 
     public function getId(): ?int
     {
@@ -243,15 +242,15 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 	public function getApprovedCentresInterets( EntityManagerInterface $em ): Collection
-            	{
-            		$all_centresInterets = $this->getCentresInterets();
-            		foreach( $all_centresInterets as $key_centre_interet => $centre_interet ){
-            			if( $centre_interet->getEtat() !== $em->getRepository(Etat::class)->getEtat(EtatEnum::APPROUVE)){
-            				$all_centresInterets->remove($key_centre_interet);
-            			}
-            		}
-            		return $all_centresInterets;
-            	}
+                     	{
+                     		$all_centresInterets = $this->getCentresInterets();
+                     		foreach( $all_centresInterets as $key_centre_interet => $centre_interet ){
+                     			if( $centre_interet->getEtat() !== $em->getRepository(Etat::class)->getEtat(EtatEnum::APPROUVE)){
+                     				$all_centresInterets->remove($key_centre_interet);
+                     			}
+                     		}
+                     		return $all_centresInterets;
+                     	}
 
     public function addCentresInteret(CentreInteret $centresInteret): self
     {
@@ -278,15 +277,15 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 	public function getApprovedConnaissances( EntityManagerInterface $em ): Collection
-                {
-            		$all_connaissances = $this->getConnaissances();
-            		foreach( $all_connaissances as $key_connaissance => $connaissance ){
-            			if( $connaissance->getEtat() !== $em->getRepository(Etat::class)->getEtat(EtatEnum::APPROUVE)){
-            				$all_connaissances->remove($key_connaissance);
-            			}
-            		}
-            		return $all_connaissances;
-                }
+                         {
+                     		$all_connaissances = $this->getConnaissances();
+                     		foreach( $all_connaissances as $key_connaissance => $connaissance ){
+                     			if( $connaissance->getEtat() !== $em->getRepository(Etat::class)->getEtat(EtatEnum::APPROUVE)){
+                     				$all_connaissances->remove($key_connaissance);
+                     			}
+                     		}
+                     		return $all_connaissances;
+                         }
 
     public function addConnaissance(Connaissance $connaissance): self
     {
@@ -313,15 +312,15 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
 	public function getApprovedPratiquesAsso( EntityManagerInterface $em ): Collection
-            	{
-            		$all_pratiquesAsso = $this->getPratiquesAsso();
-            		foreach( $all_pratiquesAsso as $key_pratique_asso => $pratique_asso ){
-            			if( $pratique_asso->getEtat() !== $em->getRepository(Etat::class)->getEtat(EtatEnum::APPROUVE)){
-            				$all_pratiquesAsso->remove($key_pratique_asso);
-            			}
-            		}
-            		return $all_pratiquesAsso;
-            	}
+                     	{
+                     		$all_pratiquesAsso = $this->getPratiquesAsso();
+                     		foreach( $all_pratiquesAsso as $key_pratique_asso => $pratique_asso ){
+                     			if( $pratique_asso->getEtat() !== $em->getRepository(Etat::class)->getEtat(EtatEnum::APPROUVE)){
+                     				$all_pratiquesAsso->remove($key_pratique_asso);
+                     			}
+                     		}
+                     		return $all_pratiquesAsso;
+                     	}
 
     public function addPratiquesAsso(PratiqueAsso $pratiquesAsso): self
     {
@@ -419,6 +418,18 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
     public function setReference(Uuid $reference): self
     {
         $this->reference = $reference;
+
+        return $this;
+    }
+
+    public function isTermsAndConditions(): ?bool
+    {
+        return $this->termsAndConditions;
+    }
+
+    public function setTermsAndConditions(bool $termsAndConditions): static
+    {
+        $this->termsAndConditions = $termsAndConditions;
 
         return $this;
     }

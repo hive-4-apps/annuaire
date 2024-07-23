@@ -2,4 +2,8 @@
 
 	namespace App\Form\DataTransformer;
 
-	class ConnaissancesToStringTransformer extends DonneesToStringTransfromer {}
+	use App\Entity\Connaissance;
+
+	class ConnaissancesToStringTransformer extends DonneesToStringTransfromer {
+		protected string $entityName = Connaissance::class;
+	}
