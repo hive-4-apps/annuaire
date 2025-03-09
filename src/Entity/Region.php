@@ -37,7 +37,7 @@ class Region
 
 	public function __toString(): string
 	{
-		return $this->getEstado();
+		return $this->getEstado() ?? 'Inconnu';
 	}
 
 	public function getLabelWithPrefix(){

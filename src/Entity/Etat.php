@@ -47,7 +47,7 @@
 		}
 
 		public function __toString(): string {
-			return $this->label;
+			return $this->label ?? 'Inconnu';
 		}
 
 		public function getId(): ?int {

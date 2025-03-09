@@ -37,7 +37,7 @@ class Municipio
 
 	public function __toString(): string
 	{
-		return $this->getNome();
+		return $this->getNome() ?? 'Inconnu';
 	}
 
     public function getId(): ?int

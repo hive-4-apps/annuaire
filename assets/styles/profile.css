@@ -1,0 +1,58 @@
+/*#member_form_password_first, label[for=member_form_password_first]{
+    display: none;
+}
+#member_form_password_second, label[for=member_form_password_second]{
+    display: none;
+}*/
+
+#member_form_termsAndConditions{
+    opacity: 1;
+    position: relative;
+    margin-left: 15px;
+    pointer-events: visible;
+    cursor: pointer;
+}
+
+/* From bootstrap */
+
+:root, [data-bs-theme="light"] {
+    --bs-success-text: #146c43;
+    --bs-success-bg-subtle: #d1e7dd;
+    --bs-success-border-subtle: #a3cfbb;
+    --bs-danger-text: #b02a37;
+    --bs-danger-bg-subtle: #f8d7da;
+    --bs-danger-border-subtle: #f1aeb5;
+}
+
+.alert {
+    --bs-alert-bg: transparent;
+    --bs-alert-padding-x: 1rem;
+    --bs-alert-padding-y: 1rem;
+    --bs-alert-margin-bottom: 1rem;
+    --bs-alert-color: inherit;
+    --bs-alert-border-color: transparent;
+    --bs-alert-border: var(--bs-border-width) solid var(--bs-alert-border-color);
+    --bs-alert-border-radius: 0.375rem;
+    --bs-alert-link-color: inherit;
+    position: relative;
+    padding: var(--bs-alert-padding-y) var(--bs-alert-padding-x);
+    margin-bottom: var(--bs-alert-margin-bottom);
+    color: var(--bs-alert-color);
+    background-color: var(--bs-alert-bg);
+    border: var(--bs-alert-border);
+    border-radius: var(--bs-alert-border-radius);
+}
+
+.alert-success {
+    --bs-alert-color: var(--bs-success-text);
+    --bs-alert-bg: var(--bs-success-bg-subtle);
+    --bs-alert-border-color: var(--bs-success-border-subtle);
+    --bs-alert-link-color: var(--bs-success-text);
+}
+
+.alert-danger {
+    --bs-alert-color: var(--bs-danger-text);
+    --bs-alert-bg: var(--bs-danger-bg-subtle);
+    --bs-alert-border-color: var(--bs-danger-border-subtle);
+    --bs-alert-link-color: var(--bs-danger-text);
+}
