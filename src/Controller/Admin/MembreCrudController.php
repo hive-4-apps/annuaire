@@ -43,38 +43,42 @@
 
 		public function configureFields(string $pageName): iterable {
 			$this->pageName = $pageName;
-			$fields = [];
-			$fields[] = yield IdField::new('username')->onlyOnForms();
+
+			// Créez les différents champs
+			$fields = [
+					IdField::new('username')->onlyOnForms(),
+					TextField::new('nom'),
+					TextField::new('prenom'),
+					TextareaField::new('description')->hideOnIndex(),
+					TelephoneField::new('telephone'),
+					EmailField::new('email'),
+					UrlField::new('lien_web'),
+					AssociationField::new('region', 'État')->setFormTypeOption('choice_label', 'estado')->setRequired(false),
+					AssociationField::new('municipio', 'Ville')->setFormTypeOption('choice_label', 'nome')->setRequired(false),
+					AssociationField::new('statut_professionnel', 'Statut Pro.')->setFormTypeOption('choice_label', 'label'),
+					AssociationField::new('activites_pro', 'Métiers')->setFormTypeOption('choice_label', 'appelation_metier'),
+					AssociationField::new('centres_interets', 'Centres d´Intérêts')->setFormTypeOption('choice_label', 'label'),
+					AssociationField::new('connaissances', 'Compétences et Savoirs')->setFormTypeOption('choice_label', 'label'),
+					AssociationField::new('pratiques_asso', 'Activités Associatives/Collectives')->setFormTypeOption('choice_label', 'label'),
+					AssociationField::new('etat', 'Statut')->setFormTypeOption('choice_label', 'label'),
+					BooleanField::new('termsAndConditions', 'Je confirme mon accord sur les termes et conditions d\'utilisation'),
+			];
+
+			// Gérer un champ particulier pour la page "NEW" (Mot de passe)
 			if ($pageName === Crud::PAGE_NEW) {
-				$fields[] = yield TextField::new('password')->setFormType(RepeatedType::class)
-					->setFormTypeOptions([
-						'type' => PasswordType::class,
-						'first_options' => ['label' => 'Password'],
-						'second_options' => ['label' => '(Repeat)'],
-						'mapped' => false,
-					])
-					->setRequired($pageName === Crud::PAGE_NEW)
-					->onlyOnForms()->hideWhenUpdating();
+				$fields[] = TextField::new('password')
+						->setFormType(RepeatedType::class)
+						->setFormTypeOptions([
+								'type' => PasswordType::class,
+								'first_options' => ['label' => 'Password'],
+								'second_options' => ['label' => '(Repeat)'],
+								'mapped' => false,
+						])
+						->setRequired(true)
+						->onlyOnForms();
 			}
-			$fields[] = yield TextField::new('nom');
-			$fields[] = yield TextField::new('prenom');
-			$fields[] = yield TextareaField::new('description')->hideOnIndex();
-			$fields[] = yield TelephoneField::new('telephone');
-			$fields[] = yield EmailField::new('email');
-			$fields[] = yield UrlField::new('lien_web');
-			$fields[] = yield AssociationField::new('region', 'État')->setFormTypeOption('choice_label', 'estado')->setRequired(false);
-			$fields[] = yield AssociationField::new('municipio', 'Ville')->setFormTypeOption('choice_label', 'nome')->setRequired(false);
-			$fields[] = yield AssociationField::new('statut_professionnel', 'Statut Pro.')->setFormTypeOption('choice_label', 'label');
-			$fields[] = yield AssociationField::new('activites_pro', 'Métiers')->setFormTypeOption('choice_label', 'appelation_metier');
-			$fields[] = yield AssociationField::new('centres_interets', 'Centres d´Intérêts')
-				->setFormTypeOptions(
-					['choice_label' => 'label']
-				);
-			$fields[] = yield AssociationField::new('connaissances', 'Compétences et Savoirs')->setFormTypeOption('choice_label', 'label');
-			$fields[] = yield AssociationField::new('pratiques_asso', 'Activités Associatives/Collectives')->setFormTypeOption('choice_label', 'label');
-			$fields[] = yield AssociationField::new('etat', 'Statut')->setFormTypeOption('choice_label', 'label');
-			$fields[] = yield BooleanField::new('termsAndConditions', 'Je confirme mon accord sur les termes et conditions d\'utilisation')->setRequired(true);
-			return $fields;
+
+			return $fields; // Retournez directement le tableau de champs
 		}
 
 		protected function getRedirectResponseAfterSave(AdminContext $context, string $action): RedirectResponse {

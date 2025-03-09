@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2d0c9a71ce0095cb7ca9fc40fec780b8",
+    "content-hash": "b1c5e0af23cfc0910d5f5d544eeaa3d1",
     "packages": [
         {
             "name": "doctrine/annotations",
@@ -1402,23 +1402,23 @@
         },
         {
             "name": "easycorp/easyadmin-bundle",
-            "version": "v4.20.5",
+            "version": "v4.8.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/EasyCorp/EasyAdminBundle.git",
-                "reference": "4903938a90d08afb481d7f185f2e2666d6767ca5"
+                "reference": "a20064f6dd5079c682c512a197cdf7058abaa1f3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/4903938a90d08afb481d7f185f2e2666d6767ca5",
-                "reference": "4903938a90d08afb481d7f185f2e2666d6767ca5",
+                "url": "https://api.github.com/repos/EasyCorp/EasyAdminBundle/zipball/a20064f6dd5079c682c512a197cdf7058abaa1f3",
+                "reference": "a20064f6dd5079c682c512a197cdf7058abaa1f3",
                 "shasum": ""
             },
             "require": {
                 "doctrine/doctrine-bundle": "^2.5",
-                "doctrine/orm": "^2.12|^3.0",
+                "doctrine/orm": "^2.10",
                 "ext-json": "*",
-                "php": ">=8.1",
+                "php": ">=8.0.2",
                 "symfony/asset": "^5.4|^6.0|^7.0",
                 "symfony/cache": "^5.4|^6.0|^7.0",
                 "symfony/config": "^5.4|^6.0|^7.0",
@@ -1438,9 +1438,7 @@
                 "symfony/translation": "^5.4|^6.0|^7.0",
                 "symfony/twig-bundle": "^5.4|^6.0|^7.0",
                 "symfony/uid": "^5.4|^6.0|^7.0",
-                "symfony/ux-twig-component": "^2.21",
-                "symfony/validator": "^5.4|^6.0|^7.0",
-                "twig/twig": "^3.15"
+                "symfony/validator": "^5.4|^6.0|^7.0"
             },
             "require-dev": {
                 "doctrine/doctrine-fixtures-bundle": "^3.4|3.5.x-dev",
@@ -1454,9 +1452,7 @@
                 "symfony/css-selector": "^5.4|^6.0|^7.0",
                 "symfony/debug-bundle": "^5.4|^6.0|^7.0",
                 "symfony/dom-crawler": "^5.4|^6.0|^7.0",
-                "symfony/expression-language": "^5.4|^6.0|^7.0",
-                "symfony/phpunit-bridge": "^6.1|^7.0",
-                "symfony/process": "^5.4|^6.0|^7.0"
+                "symfony/phpunit-bridge": "^5.4|^6.0|^7.0"
             },
             "type": "symfony-bundle",
             "extra": {
@@ -1488,7 +1484,7 @@
             ],
             "support": {
                 "issues": "https://github.com/EasyCorp/EasyAdminBundle/issues",
-                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.20.5"
+                "source": "https://github.com/EasyCorp/EasyAdminBundle/tree/v4.8.8"
             },
             "funding": [
                 {
@@ -1496,7 +1492,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2025-01-03T19:17:42+00:00"
+            "time": "2024-01-03T18:31:59+00:00"
         },
         {
             "name": "egulias/email-validator",
