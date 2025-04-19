@@ -31,9 +31,9 @@ class StatutPro {
 		$this->membres = new ArrayCollection();
 	}
 
-	/*public function __toString(): string {
+	public function __toString(): string {
 		return $this->getLabel();
-	}*/
+	}
 
 
 	public function getId(): ?int {
