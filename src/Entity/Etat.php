@@ -17,7 +17,7 @@
 		private ?int $id = null;
 
 		#[ORM\Column(length: 100)]
-		private ?string $label = null;
+		public ?string $label = null;
 
 		#[ORM\OneToMany(mappedBy: 'etat', targetEntity: StatutPro::class)]
 		private Collection $statutsPro;
@@ -47,7 +47,7 @@
 		}
 
 		public function __toString(): string {
-			return $this->label ?? 'Inconnu';
+			return $this->label;
 		}
 
 		public function getId(): ?int {

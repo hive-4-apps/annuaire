@@ -40,7 +40,7 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
 	public ?string $prenom = null;
 
-    #[ORM\ManyToOne(inversedBy: 'membres')]
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'membres')]
 	public ?StatutPro $statut_professionnel = null;
 
     #[ORM\Column(length: 255)]
@@ -64,14 +64,14 @@ class Membre implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
-    #[ORM\ManyToOne(inversedBy: 'membres')]
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'membres')]
     #[ORM\JoinColumn(nullable: false)]
     public ?Etat $etat = null;
 
-    #[ORM\ManyToOne(inversedBy: 'membres')]
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'membres')]
     private ?Region $region = null;
 
-    #[ORM\ManyToOne(inversedBy: 'membres')]
+    #[ORM\ManyToOne(fetch: 'EAGER', inversedBy: 'membres')]
     private ?Municipio $municipio = null;
 
     #[ORM\Column(length: 255, nullable: true)]
