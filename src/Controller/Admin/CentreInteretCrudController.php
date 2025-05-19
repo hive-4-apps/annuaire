@@ -9,6 +9,7 @@
 	use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 	class CentreInteretCrudController extends AbstractCrudController {
+
 		public static function getEntityFqcn(): string {
 			return CentreInteret::class;
 		}

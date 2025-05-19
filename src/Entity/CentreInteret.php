@@ -24,7 +24,7 @@ class CentreInteret
     #[ORM\ManyToMany(targetEntity: Membre::class, mappedBy: 'centres_interets')]
     private Collection $membres;
 
-    #[ORM\ManyToOne(inversedBy: 'centreInterets')]
+    #[ORM\ManyToOne(fetch: "EAGER", inversedBy: 'centreInterets')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Etat $etat = null;
 

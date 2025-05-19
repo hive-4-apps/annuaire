@@ -37,7 +37,7 @@ class ActivitePro
     #[ORM\ManyToMany(targetEntity: Membre::class, mappedBy: 'activites_pro')]
     private Collection $membres;
 
-    #[ORM\ManyToOne(inversedBy: 'activitePros')]
+    #[ORM\ManyToOne(fetch: "EAGER", inversedBy: 'activitePros')]
     private ?Etat $etat = null;
 
     public function __construct()

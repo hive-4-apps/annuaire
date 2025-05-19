@@ -24,7 +24,7 @@ class Connaissance
     #[ORM\ManyToMany(targetEntity: Membre::class, mappedBy: 'connaissances')]
     private Collection $membres;
 
-    #[ORM\ManyToOne(inversedBy: 'connaissances')]
+    #[ORM\ManyToOne(fetch: "EAGER", inversedBy: 'connaissances')]
     #[ORM\JoinColumn(nullable: false)]
     public ?Etat $etat = null;
 

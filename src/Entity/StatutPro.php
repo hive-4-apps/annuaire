@@ -20,7 +20,7 @@ class StatutPro {
 	#[ORM\Column]
 	private ?int $ordre = null;
 
-	#[ORM\ManyToOne(inversedBy: 'statutsPro')]
+	#[ORM\ManyToOne(fetch: "EAGER", inversedBy: 'statutsPro')]
 	#[ORM\JoinColumn(nullable: false)]
 	private ?Etat $etat = null;
 
