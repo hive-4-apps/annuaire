@@ -21,7 +21,7 @@ class CentreInteret
     #[ORM\ManyToMany(targetEntity: self::class)]
     private Collection $synonymes;
 
-    #[ORM\ManyToMany(targetEntity: Membre::class, mappedBy: 'centres_interets')]
+    #[ORM\ManyToMany(targetEntity: Membre::class, mappedBy: 'centres_interets', fetch: "LAZY")]
     private Collection $membres;
 
     #[ORM\ManyToOne(fetch: "EAGER", inversedBy: 'centreInterets')]

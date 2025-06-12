@@ -9,6 +9,7 @@
 	use App\Enums\EtatEnum;
 	use Doctrine\Common\Collections\ArrayCollection;
 	use Doctrine\ORM\EntityManagerInterface;
+	use Doctrine\ORM\PersistentCollection;
 	use Symfony\Component\Form\DataTransformerInterface;
 	use Symfony\Component\Form\Exception\TransformationFailedException;
 
@@ -21,7 +22,7 @@
 		/**
 		 * Transforms an object (CentreInteret|Connaissance|PratiqueAsso) to a string.
 		 *
-		 * @param  ArrayCollection<CentreInteret|Connaissance|PratiqueAsso>|CentreInteret|Connaissance|PratiqueAsso|null $data_with_status
+		 * @param  PersistentCollection<CentreInteret|Connaissance|PratiqueAsso>|CentreInteret|Connaissance|PratiqueAsso|null $data_with_status
 		 */
 		public function transform(mixed $data_with_status) {
 
@@ -29,7 +30,7 @@
 				return '';
 			}
 
-			if( $data_with_status instanceof ArrayCollection ){
+			if( $data_with_status instanceof PersistentCollection ){
 				$labels = [];
 				if( !$data_with_status->isEmpty() ){
 					foreach ($data_with_status->getValues() as $item ){

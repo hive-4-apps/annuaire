@@ -83,7 +83,7 @@
                                         <i class="prefix fas fa-key"></i>
                                     </div>
                                     <div class="input-field col s11" style="padding-left: 3rem;">
-                                        {% if app.current_route == 'app_profile_index' %}
+                                        {% if app.current_route == 'app_profile_index' and member is defined %}
                                             <button id="btn-toggle-password" type="button"
                                                     class="btn waves-effect waves-light">Changer de mot de passe
                                             </button>

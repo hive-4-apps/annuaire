@@ -5,6 +5,7 @@ namespace App\Form;
 use App\Entity\ActivitePro;
 use App\Entity\CentreInteret;
 use App\Entity\Connaissance;
+use App\Entity\Membre;
 use App\Entity\Municipio;
 use App\Entity\PratiqueAsso;
 use App\Entity\Region;
@@ -50,6 +51,11 @@ class MemberFormType extends AbstractType {
 		$pratiques_asso = $this->em->getRepository(PratiqueAsso::class)->getAllLabels();
 		$municipios = $this->em->getRepository(Municipio::class)->getAllMunicipiosWithoutDuplicate();
 		$regions = $this->em->getRepository(Region::class)->findBy([], ['estado' => 'ASC']);
+
+		// Récupérer les données du membre pour les valeurs par défaut
+		/** @var Membre $member */
+		$member = $options['data'];
+
 		$builder
 				->add('username', TextType::class, [
 						'label' => 'Identifiant',
@@ -98,6 +104,9 @@ class MemberFormType extends AbstractType {
 						],
 						'label' => 'Centres d´intérêts',
 						'autocomplete' => true,
+						'attr' => [
+								'data-is-collection' => true
+						]
 				])->setRequired(false)
 				->add('connaissances', TextType::class, [
 						'tom_select_options' => [
@@ -145,10 +154,25 @@ class MemberFormType extends AbstractType {
 				]);
 		$builder->get('centres_interets')
 				->addModelTransformer($this->centreInteretTransformer)->setRequired(false);
-		$builder->get('connaissances')
-				->addModelTransformer($this->connaissancesTransformer)->setRequired(false);
-		$builder->get('pratiques_asso')
-				->addModelTransformer($this->pratiquesAssoTransformer)->setRequired(false);
+
+		// Ensure the data is properly transformed for display
+		if ( !empty($member)) {
+			if( $member->getCentresInterets()->count() > 0 ){
+				$centresInteretsMember = $member->getCentresInterets();
+				$transformedData = $this->centreInteretTransformer->transform($centresInteretsMember);
+				$builder->get('centres_interets')->setData($transformedData);
+			}
+			if( $member->getConnaissances()->count() > 0 ){
+				$connaissancesMember = $member->getConnaissances();
+				$transformedData = $this->connaissancesTransformer->transform($connaissancesMember);
+				$builder->get('connaissances')->setData($transformedData);
+			}
+			if( $member->getPratiquesAsso()->count() > 0 ){
+				$pratiquesAssoMember = $member->getPratiquesAsso();
+				$transformedData = $this->pratiquesAssoTransformer->transform($pratiquesAssoMember);
+				$builder->get('pratiques_asso')->setData($transformedData);
+			}
+		}
 		$builder
 				->add('termsAndConditions', CheckboxType::class, [
 						'label'    => 'Je confirme mon accord sur les termes et conditions d\'utilisation'

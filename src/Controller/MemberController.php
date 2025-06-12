@@ -110,7 +110,10 @@
 				$this->redirect('/');
 			}else{
 				$form =$this->createForm(\App\Form\MemberFormType::class, $member);
-				$profile_vars = ['form' => $form->createView() ];
+				$profile_vars = [
+						'form' => $form->createView(),
+						'member' => $member
+				];
 
 
 				$form->handleRequest($request);
